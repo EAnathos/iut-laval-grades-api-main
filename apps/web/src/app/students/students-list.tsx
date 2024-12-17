@@ -65,10 +65,10 @@ export interface Student {
 // ];
 
 export async function StudentsList() {
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [displayedStudents, setDisplayedStudents] = useState<Student[]>(students);
-  
+
 
 
 
@@ -87,7 +87,7 @@ export async function StudentsList() {
     );
     setDisplayedStudents(filtered);
   };
-  
+
 
   return (
     <div className="p-6">

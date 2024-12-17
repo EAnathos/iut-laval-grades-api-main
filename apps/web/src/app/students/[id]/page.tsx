@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react';
 import { GradesTable } from '../grade-table';
 import { StudentDetails } from '../student-details';
-import { getUser } from '@web/lib/auth';
-import { notFound } from 'next/navigation';
 
-type StudentProps = {
   params: {
     id?: string;
   };
@@ -19,11 +15,21 @@ export interface Student {
   studentId: string;
 }
 
+export default function Home({ params }: HomeProps) {
+
+  const student: Student = {
+    id: 1,
+    firstName: 'Alex',
+    lastName: 'lemoine',
+    email: 'AlexLemoine@example.com',
+    dateOfBirth: '2004-11-26',
+    studentId: 'i2201206',
+  };
 export default async function Student({ params }: StudentProps) {
   const user = await getUser();
   if (!user) return null;
   const res = await fetch('http://localhost:4000/api/students/${params.id}');
-  const student = await res.json(); 
+  const student = await res.json();
   if (!student) return notFound();
 
   return (
