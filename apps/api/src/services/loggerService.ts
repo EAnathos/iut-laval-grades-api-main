@@ -1,5 +1,5 @@
-import winston from 'winston';
-import path from 'path';
+import * as winston from 'winston';
+import * as path from 'path';
 
 const logDir = 'logs';
 const { combine, timestamp, printf, colorize } = winston.format;

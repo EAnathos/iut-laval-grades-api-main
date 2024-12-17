@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env"],
+  "globalEnv": ["PORT", "NODE_ENV", "DB_USER", "DB_HOST", "DB_NAME", "DB_PASSWORD", "DB_PORT", "JWT_SECRET", "JWT_EXPIRES_IN", "API_URL"],
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "outputs": ["dist/**", ".next/**", ".next/cache/**"]
+    },
+    "build:web": {
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "build:api": {
+      "outputs": ["dist/**"]
+    },
+    "db:dev": {
+      "cache": false
+    },
+    "db:reset": {
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:deploy": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:pull": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false
+    }
+  }
+}
