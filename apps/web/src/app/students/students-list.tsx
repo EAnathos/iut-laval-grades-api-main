@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@web/components/ui/button';
 import { Input } from '@web/components/ui/input';
@@ -13,8 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@web/components/ui/dialog';
-import { getUser } from '@web/lib/auth';
-import { notFound } from 'next/navigation';
 
 export interface Student {
   id: number;
@@ -25,43 +23,37 @@ export interface Student {
   studentId: string;
 }
 
-// const students: Student[] = [
-//   {
-//     id: 1,
-//     firstName: 'Alex',
-//     lastName: 'lemoine',
-//     email: 'AlexLemoine@example.com',
-//     dateOfBirth: '2004-11-26',
-//     studentId: 'i2201206',
-//   },
-//   {
-//     id: 2,
-//     firstName: 'test',
-//     lastName: 'test',
-//     email: 'test@example.com',
-//     dateOfBirth: '2004-12-17',
-//     studentId: 'i2201206',
-//   },
-// ];
+const students: Student[] = [
+  {
+    id: 1,
+    firstName: 'Alex',
+    lastName: 'lemoine',
+    email: 'AlexLemoine@example.com',
+    dateOfBirth: '2004-11-26',
+    studentId: 'i2201206',
+  },
+  {
+    id: 2,
+    firstName: 'test',
+    lastName: 'test',
+    email: 'test@example.com',
+    dateOfBirth: '2004-12-17',
+    studentId: 'i2201206',
+  },
+];
 
-export async function StudentsList() {
+export function StudentsList() {
+  const [searchTerm, setSearchTerm] = useState('');
 
+  function onSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearchTerm(event.target.value);
+  }
 
-
-  const user = await getUser();
-  if (!user) return null;
-  const res = await fetch('http://localhost:4000/api/students/');
-  const filteredStudents = await res.json();
-  if (!filteredStudents) return notFound();
-
-  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const filtered = students.filter(student =>
-      student.firstName.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      student.lastName.toLowerCase().includes(event.target.value.toLowerCase())
-    );
-    setDisplayedStudents(filtered);
-  };
-  
+  const filteredStudents = students.filter(
+    student =>
+      student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   return (
     <div className="p-6">
@@ -94,7 +86,7 @@ export async function StudentsList() {
       </div>
 
       <div className="space-y-4">
-        {filteredStudents.map((student: Student) => (
+        {filteredStudents.map(student => (
           <Link key={student.id} href={`/students/${student.id}`}>
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div>

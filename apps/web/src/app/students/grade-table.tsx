@@ -1,4 +1,3 @@
-'use client';
 import { Pencil, Trash2 } from 'lucide-react'
 import {
     Table,
@@ -9,7 +8,6 @@ import {
     TableRow,
 } from "@web/components/ui/table"
 import { Button } from "@web/components/ui/button"
-import React, { useEffect } from 'react';
 
 export interface Grade {
     id: number;

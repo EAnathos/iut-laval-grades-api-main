@@ -29,7 +29,7 @@ export function StudentDetails({ student }: StudentDetailsProps) {
             <h1 className="text-2xl font-bold">{student.firstName} {student.lastName}</h1>
             <p className="text-sm text-gray-600">Numéro étudiant: {student.studentId}</p>
           </div>
-          <Button>
+          <Button className="bg-[#E6007E] hover:bg-[#E6007E]/90">
             <Download className="mr-2 h-4 w-4" />
             Relevé de notes
           </Button>
