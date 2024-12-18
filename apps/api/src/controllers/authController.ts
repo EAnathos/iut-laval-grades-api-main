@@ -11,7 +11,7 @@ export const authController = {
 
     try {
       const result = await pool.query(
-        'SELECT id, email, password_hash as "passwordHash", first_name as "firstName", department FROM professors WHERE email = $1',
+        'SELECT id, email, password_hash as "passwordHash", first_name as "firstName", last_name as "lastName", department FROM professors WHERE email = $1',
         [email]
       );
 
@@ -47,6 +47,7 @@ export const authController = {
           id: professor.id,
           email: professor.email,
           firstName: professor.firstName,
+          lastName: professor.lastName,
           department: professor.department,
         },
       });
