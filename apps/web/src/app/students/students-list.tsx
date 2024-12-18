@@ -13,6 +13,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@web/components/ui/dialog';
+import { getUser } from '@web/lib/auth';
+import { notFound } from 'next/navigation';
 
 export interface Student {
   id: number;
@@ -23,61 +25,49 @@ export interface Student {
   studentId: string;
 }
 
-const students: Student[] = [
-  {
-    id: 1,
-    firstName: 'Alex',
-    lastName: 'lemoine',
-    email: 'AlexLemoine@example.com',
-    dateOfBirth: '2004-11-26',
-    studentId: 'i2201206',
-  },
-  {
-    id: 2,
-    firstName: 'test',
-    lastName: 'test',
-    email: 'test@example.com',
-    dateOfBirth: '2004-12-17',
-    studentId: 'i2201206',
-  },
-];
+// const students: Student[] = [
+//   {
+//     id: 1,
+//     firstName: 'Alex',
+//     lastName: 'lemoine',
+//     email: 'AlexLemoine@example.com',
+//     dateOfBirth: '2004-11-26',
+//     studentId: 'i2201206',
+//   },
+//   {
+//     id: 2,
+//     firstName: 'test',
+//     lastName: 'test',
+//     email: 'test@example.com',
+//     dateOfBirth: '2004-12-17',
+//     studentId: 'i2201206',
+//   },
+// ];
 
-export function StudentsList() {
+export async function StudentsList() {
+  
   const [searchTerm, setSearchTerm] = useState('');
+  const [displayedStudents, setDisplayedStudents] = useState<Student[]>(students);
+  
 
-  function onSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+
+
+  const user = await getUser();
+  if (!user) return null;
+  const res = await fetch('http://localhost:4000/api/students/');
+  const filteredStudents = await res.json();
+  if (!filteredStudents) return notFound();
+  setDisplayedStudents(filteredStudents);
+
+  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  }
-
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+    const filtered = students.filter(student =>
+      student.firstName.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      student.lastName.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setDisplayedStudents(filtered);
+  };
   
-    const fetchStudents = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:4000/api/students/`,
-        );
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des cours');
-        }
-        const data: Student[] = await response.json();
-        setFilteredStudents(data);
-      } catch (error) {
-        console.error('Erreur:', error);
-        //setError('Impossible de charger les cours')
-      } finally {
-        //setIsLoading(false)
-      }
-    };
-  
-    useEffect(() => {
-      fetchStudents();
-    }, []);
-
-  const displayedStudents = filteredStudents.filter(
-    student =>
-      student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
 
   return (
     <div className="p-6">
