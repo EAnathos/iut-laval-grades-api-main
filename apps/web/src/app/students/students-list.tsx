@@ -45,13 +45,6 @@ export interface Student {
 // ];
 
 export async function StudentsList() {
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [displayedStudents, setDisplayedStudents] = useState<Student[]>(students);
-  
-
-
-
   const user = await getUser();
   if (!user) return null;
   const res = await fetch('http://localhost:4000/api/students/');
@@ -61,13 +54,13 @@ export async function StudentsList() {
 
   const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  }
-
-  const filteredStudents = students.filter(
-    student =>
-      student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+    const filtered = students.filter(student =>
+      student.firstName.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      student.lastName.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setDisplayedStudents(filtered);
+  };
+  
 
   return (
     <div className="p-6">
