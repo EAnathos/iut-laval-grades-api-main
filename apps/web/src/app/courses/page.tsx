@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { Input } from "@web/components/ui/input"
 import { Button } from "@web/components/ui/button"
 import { Pencil, Trash2 } from 'lucide-react'
+import { AddCourse } from '@web/components/forms/add-course';
+import { Dialog, DialogTrigger, DialogContent, DialogOverlay } from "@web/components/ui/dialog"
 
 interface Course {
   id: number
@@ -13,16 +15,22 @@ interface Course {
   description: string
 }
 
-export default function Page() {
+export default function Courses() {
   const [searchTerm, setSearchTerm] = useState('')
   const [courses, setCourses] = useState<Course[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false) // État pour gérer l'ouverture de la modal
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/courses')
+        const response = await fetch('http://localhost:4000/api/courses', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des cours')
         }
@@ -36,7 +44,7 @@ export default function Page() {
       }
     }
 
-    fetchCourses().then(r => r)
+    fetchCourses()
   }, [])
 
   const deleteCourse = async (id: number) => {
@@ -74,9 +82,20 @@ export default function Page() {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Liste des cours</h1>
-        <Button className="bg-pink-600 hover:bg-pink-700">
-          Ajouter un cours
-        </Button>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-pink-600 hover:bg-pink-700">
+              Ajouter un cours
+            </Button>
+          </DialogTrigger>
+
+          <DialogOverlay className="fixed inset-0 bg-gray-500 bg-opacity-50" />
+
+          <DialogContent>
+            <AddCourse />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="mb-6">
