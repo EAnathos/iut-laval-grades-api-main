@@ -1,3 +1,5 @@
+"use client";
+import React, { useEffect } from 'react';
 import { GradesTable } from '../grade-table';
 import { StudentDetails } from '../student-details';
 
@@ -17,22 +19,35 @@ export interface Student {
 }
 
 export default function Home({ params }: HomeProps) {
-  
-  const student: Student = {
-    id: 1,
-    firstName: 'Alex',
-    lastName: 'lemoine',
-    email: 'AlexLemoine@example.com',
-    dateOfBirth: '2004-11-26',
-    studentId: 'i2201206',
+  const [student, setStudent] = React.useState<Student[]>([]);
+
+  const fetchStudent = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/students/${params.id}`,
+      );
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des cours');
+      }
+      const data: Student[] = await response.json();
+      setStudent(data);
+    } catch (error) {
+      console.error('Erreur:', error);
+      //setError('Impossible de charger les cours')
+    } finally {
+      //setIsLoading(false)
+    }
   };
+
+  useEffect(() => {
+    fetchStudent();
+  }, []);
 
   return (
     <div className="min-h-svh bg-muted ">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <StudentDetails student={student} />
-        {params.id}
-        <GradesTable />
+        <GradesTable studentId={student.studentId} />
       </div>
     </div>
   );

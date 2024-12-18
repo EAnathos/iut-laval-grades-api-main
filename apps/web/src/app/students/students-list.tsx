@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@web/components/ui/button';
 import { Input } from '@web/components/ui/input';
@@ -49,7 +49,31 @@ export function StudentsList() {
     setSearchTerm(event.target.value);
   }
 
-  const filteredStudents = students.filter(
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/api/students/`,
+        );
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des cours');
+        }
+        const data: Student[] = await response.json();
+        setFilteredStudents(data);
+      } catch (error) {
+        console.error('Erreur:', error);
+        //setError('Impossible de charger les cours')
+      } finally {
+        //setIsLoading(false)
+      }
+    };
+  
+    useEffect(() => {
+      fetchStudents();
+    }, []);
+
+  const displayedStudents = filteredStudents.filter(
     student =>
       student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -86,7 +110,7 @@ export function StudentsList() {
       </div>
 
       <div className="space-y-4">
-        {filteredStudents.map(student => (
+        {displayedStudents.map(student => (
           <Link key={student.id} href={`/students/${student.id}`}>
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div>
