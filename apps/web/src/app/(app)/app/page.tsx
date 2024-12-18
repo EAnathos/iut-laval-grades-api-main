@@ -10,7 +10,8 @@ export default async function AppHome() {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <pre>{JSON.stringify(user, null, 2)}</pre>
+        <p>home</p>
+        {/*<pre>{JSON.stringify(user, null, 2)}</pre>*/}
         <form
           action={async () => {
             "use server"
@@ -20,7 +21,7 @@ export default async function AppHome() {
             })
           }}
         >
-          <Button type="submit">Sign Out</Button>
+          {/*<Button type="submit">Sign Out</Button>*/}
         </form>
       </div>
       <pre>{JSON.stringify(students, null, 2)}</pre>
