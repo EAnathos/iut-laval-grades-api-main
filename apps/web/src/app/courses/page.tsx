@@ -6,6 +6,13 @@ import { Button } from "@web/components/ui/button"
 import { Pencil, Trash2 } from 'lucide-react'
 import { AddCourse } from '@web/components/forms/add-course';
 import { Dialog, DialogTrigger, DialogContent, DialogOverlay } from "@web/components/ui/dialog"
+import { getUser } from '@web/lib/auth';
+
+type CourseProps = {
+  params: {
+    id?: string;
+  };
+};
 
 interface Course {
   id: number
@@ -15,32 +22,32 @@ interface Course {
   description: string
 }
 
-export default function Courses() {
+export default function Courses({params}: CourseProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [courses, setCourses] = useState<Course[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false) // État pour gérer l'ouverture de la modal
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  //const user = await getUser();
+  //if (!user) return null;
+
+  //const response = await fetch('http://localhost:4000/api/courses')
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/courses', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-        })
+        const user = await getUser();
+        if (!user) return null;
+
+        const response = await fetch('http://localhost:4000/api/courses')
 
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des cours')
         }
+
         const data: Course[] = await response.json()
         setCourses(data)
       } catch (error) {
         console.error('Erreur:', error)
-        //setError('Impossible de charger les cours')
-      } finally {
-        setIsLoading(false)
       }
     }
 
@@ -69,14 +76,6 @@ export default function Courses() {
     course.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
     course.nom.toLowerCase().includes(searchTerm.toLowerCase())
   )
-
-  if (isLoading) {
-    return <div className="p-6">Chargement des cours...</div>
-  }
-
-  if (error) {
-    return <div className="p-6 text-red-600">{error}</div>
-  }
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
