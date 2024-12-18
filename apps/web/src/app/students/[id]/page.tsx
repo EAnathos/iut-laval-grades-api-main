@@ -1,6 +1,9 @@
+"use client";
+import React, { useEffect } from 'react';
 import { GradesTable } from '../grade-table';
 import { StudentDetails } from '../student-details';
 
+type HomeProps = {
   params: {
     id?: string;
   };
