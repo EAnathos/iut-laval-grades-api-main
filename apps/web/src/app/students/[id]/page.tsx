@@ -1,9 +1,10 @@
-"use client";
 import React, { useEffect } from 'react';
 import { GradesTable } from '../grade-table';
 import { StudentDetails } from '../student-details';
+import { getUser } from '@web/lib/auth';
+import { notFound } from 'next/navigation';
 
-type HomeProps = {
+type StudentProps = {
   params: {
     id?: string;
   };
@@ -18,30 +19,12 @@ export interface Student {
   studentId: string;
 }
 
-export default function Home({ params }: HomeProps) {
-  const [student, setStudent] = React.useState<Student[]>([]);
-
-  const fetchStudent = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:4000/api/students/${params.id}`,
-      );
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des cours');
-      }
-      const data: Student[] = await response.json();
-      setStudent(data);
-    } catch (error) {
-      console.error('Erreur:', error);
-      //setError('Impossible de charger les cours')
-    } finally {
-      //setIsLoading(false)
-    }
-  };
-
-  useEffect(() => {
-    fetchStudent();
-  }, []);
+export default async function Student({ params }: StudentProps) {
+  const user = await getUser();
+  if (!user) return null;
+  const res = await fetch('http://localhost:4000/api/students/${params.id}');
+  const student = await res.json(); 
+  if (!student) return notFound();
 
   return (
     <div className="min-h-svh bg-muted ">
