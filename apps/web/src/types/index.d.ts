@@ -51,3 +51,28 @@ export interface AuthProfessor {
   department: string;
   passwordHash: string;
 }
+
+type GlobalStats = {
+  globalAverage: number;
+  totalStudents: number;
+  totalCourses: number;
+  averageSuccessRate: number;
+};
+
+type CourseStats = {
+  courseCode: string;
+  courseName: string;
+  averageGrade: number;
+  minGrade: number;
+  maxGrade: number;
+  totalStudents: number;
+  successRate: number;
+};
+
+type StudentSemesterStats = {
+  semester: string;
+  averageGrade: number;
+  totalCredits: number;
+  validatedCredits: number;
+  coursesCount: number;
+};
