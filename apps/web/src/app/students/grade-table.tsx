@@ -102,6 +102,7 @@ import {
     TableRow,
 } from "@web/components/ui/table"
 import { Button } from "@web/components/ui/button"
+import React, { useEffect } from 'react';
 
 export interface Grade {
     id: number;
@@ -116,46 +117,33 @@ export interface Grade {
     courseName: string;
 }
 
-const grades: Grade[] = [
-    {
-        id: 1,
-        studentId: 0,
-        courseId: 0,
-        grade: 20,
-        semester: "S1",
-        academicYear: "9883-6138",
-        studentFirstName: "John",
-        studentLastName: "Doe",
-        courseCode: "RS.A.08",
-        courseName: "Qualité de développement",
-    },
-    {
-        id: 2,
-        studentId: 0,
-        courseId: 0,
-        grade: 16,
-        semester: "S1",
-        academicYear: "9883-6138",
-        studentFirstName: "Jane",
-        studentLastName: "Smith",
-        courseCode: "INFO101",
-        courseName: "Introduction aux BDD",
-    },
-    {
-        id: 3,
-        studentId: 0,
-        courseId: 0,
-        grade: 13,
-        semester: "S1",
-        academicYear: "9883-6138",
-        studentFirstName: "Alice",
-        studentLastName: "Johnson",
-        courseCode: "INFO101",
-        courseName: "Introduction aux BDD",
-    },
-]
+interface GradesTableProps {
+    studentId: string;
+}
 
-export function GradesTable() {
+export function GradesTable({ studentId }: GradesTableProps) {
+    const [grades, setGrades] = React.useState<Grade[]>([]);
+
+    const fetchGrade = async () => {
+        try {
+          const response = await fetch(`http://localhost:4000/api/grades/student/${studentId}`);
+          if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des cours');
+          }
+          const data: Grade[] = await response.json();
+          setGrades(data);
+        } catch (error) {
+          console.error('Erreur:', error);
+          //setError('Impossible de charger les cours')
+        } finally {
+          //setIsLoading(false)
+        }
+      }
+
+    useEffect(() => {
+        fetchGrade();
+    }, [studentId])
+    
     return (
         <div className="rounded-lg border bg-white">
             <h2 className="border-b p-4 text-lg font-semibold">Notes</h2>
