@@ -1,92 +1,65 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { Input } from "@web/components/ui/input"
-import { Button } from "@web/components/ui/button"
-import { Pencil, Trash2 } from 'lucide-react'
-import { AddCourse } from '@web/components/forms/add-course';
-import { Dialog, DialogTrigger, DialogContent, DialogOverlay } from "@web/components/ui/dialog"
-import { getUser } from '@web/lib/auth';
-
-type CourseProps = {
-  params: {
-    id?: string;
-  };
-};
+import { useEffect, useState } from "react";
+import { Button } from "@web/components/ui/button";
+import { AddCourse } from "@web/components/forms/add-course";
+import { Dialog, DialogTrigger, DialogContent, DialogOverlay } from "@web/components/ui/dialog";
+import { getUser } from "@web/lib/auth";
+import api from "@web/lib/api";
+import { User } from "next-auth";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface Course {
-  id: number
-  code: string
-  nom: string
-  credits: number
-  description: string
+  id: number;
+  code: string;
+  name: string;
+  credits: number;
 }
 
-export default function Courses({params}: CourseProps) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [courses, setCourses] = useState<Course[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  //const user = await getUser();
-  //if (!user) return null;
-
-  //const response = await fetch('http://localhost:4000/api/courses')
+export default function Courses() {
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const user = await getUser();
-        if (!user) return null;
+        const user: User | null = await getUser();
+        if (!user) throw new Error("Utilisateur non connecté.");
 
-        const response = await fetch('http://localhost:4000/api/courses')
+        const courses = await api.courses.getAll(user);
+        if (!courses) throw new Error("Impossible de récupérer les cours.");
 
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des cours')
-        }
-
-        const data: Course[] = await response.json()
-        setCourses(data)
-      } catch (error) {
-        console.error('Erreur:', error)
+        setCourses(courses);
+      } catch (err) {
+        console.error("Erreur lors de la récupération des cours:", err);
+      } finally {
       }
-    }
+    };
 
-    fetchCourses()
-  }, [])
+    fetchCourses();
+  }, []);
 
   const deleteCourse = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/courses/${id}`, {
-        method: 'DELETE',
-      })
+      const user: User | null = await getUser();
+      if (!user) return;
 
-      if (response.status === 204) {
-        setCourses(courses.filter(course => course.id !== id))
-      } else if (response.status === 404) {
-        console.error('Cours non trouvé')
-      } else {
-        throw new Error('Erreur lors de la suppression')
-      }
-    } catch (error) {
-      console.error('Erreur:', error)
+      await api.courses.delete(user, id);
+
+      // Supprimer le cours de la liste locale après suppression
+      setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
+    } catch (err) {
+      console.error("Erreur lors de la suppression du cours:", err);
     }
-  }
-
-  const filteredCourses = courses.filter(course =>
-    course.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    course.nom.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Liste des cours</h1>
 
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-pink-600 hover:bg-pink-700">
-              Ajouter un cours
-            </Button>
+            <Button className="bg-pink-600 hover:bg-pink-700">Ajouter un cours</Button>
           </DialogTrigger>
 
           <DialogOverlay className="fixed inset-0 bg-gray-500 bg-opacity-50" />
@@ -97,15 +70,7 @@ export default function Courses({params}: CourseProps) {
         </Dialog>
       </div>
 
-      <div className="mb-6">
-        <Input
-          type="search"
-          placeholder="Rechercher un cours..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-xl"
-        />
-      </div>
+      {/* <SearchBar /> */}
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
@@ -118,12 +83,12 @@ export default function Courses({params}: CourseProps) {
           </tr>
           </thead>
           <tbody>
-          {filteredCourses.map((course) => (
+          {courses.map((course) => (
             <tr key={course.id} className="border-b">
-              <td className="py-3 px-4 text-blue-600">{course.code}</td>
-              <td className="py-3 px-4">{course.nom}</td>
-              <td className="py-3 px-4">{course.credits}</td>
-              <td className="py-3 px-4">
+              <td className="py-3 px-4 text-gray-700">{course.code}</td>
+              <td className="py-3 px-4 text-gray-700">{course.name}</td>
+              <td className="py-3 px-4 text-gray-700">{course.credits}</td>
+              <td className="py-3 px-4 text-gray-700">
                 <div className="flex gap-2">
                   <button className="text-blue-600 hover:text-blue-800">
                     <Pencil className="h-5 w-5" />
@@ -142,5 +107,5 @@ export default function Courses({params}: CourseProps) {
         </table>
       </div>
     </div>
-  )
+  );
 }
