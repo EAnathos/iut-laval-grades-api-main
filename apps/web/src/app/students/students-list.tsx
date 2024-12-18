@@ -120,7 +120,7 @@ export async function StudentsList() {
       </div>
 
       <div className="space-y-4">
-        {filteredStudents.map(student => (
+        {displayedStudents.map(student => (
           <Link key={student.id} href={`/students/${student.id}`}>
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div>
