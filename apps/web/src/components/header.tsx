@@ -39,7 +39,7 @@ export const Header = ({firstName, lastName, department} : HeaderProps) => {
           )}
           asChild
         >
-          <Link href="/students">
+          <Link href="/app/students">
             <Users size={24} className="text-muted" />
             Étudiants{' '}
           </Link>
@@ -53,7 +53,7 @@ export const Header = ({firstName, lastName, department} : HeaderProps) => {
           )}
           asChild
         >
-          <Link href="/courses">
+          <Link href="/app/courses">
             <BookOpen size={24} className="text-muted" />
             Cours
           </Link>
@@ -67,7 +67,7 @@ export const Header = ({firstName, lastName, department} : HeaderProps) => {
           )}
           asChild
         >
-          <Link href="/statistics">
+          <Link href="/app/statistics">
             <ChartNoAxesColumn size={24} className="text-muted" />
             Statistiques
           </Link>
