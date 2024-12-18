@@ -61,13 +61,13 @@ export async function StudentsList() {
 
   const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-    const filtered = students.filter(student =>
-      student.firstName.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      student.lastName.toLowerCase().includes(event.target.value.toLowerCase())
-    );
-    setDisplayedStudents(filtered);
-  };
-  
+  }
+
+  const filteredStudents = students.filter(
+    student =>
+      student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   return (
     <div className="p-6">
