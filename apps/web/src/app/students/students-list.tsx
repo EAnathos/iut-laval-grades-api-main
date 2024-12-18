@@ -45,10 +45,6 @@ export interface Student {
 // ];
 
 export async function StudentsList() {
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [displayedStudents, setDisplayedStudents] = useState<Student[]>(students);
-  
 
 
 
@@ -57,10 +53,8 @@ export async function StudentsList() {
   const res = await fetch('http://localhost:4000/api/students/');
   const filteredStudents = await res.json();
   if (!filteredStudents) return notFound();
-  setDisplayedStudents(filteredStudents);
 
   const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
     const filtered = students.filter(student =>
       student.firstName.toLowerCase().includes(event.target.value.toLowerCase()) ||
       student.lastName.toLowerCase().includes(event.target.value.toLowerCase())
@@ -100,7 +94,7 @@ export async function StudentsList() {
       </div>
 
       <div className="space-y-4">
-        {displayedStudents.map(student => (
+        {filteredStudents.map((student: Student) => (
           <Link key={student.id} href={`/students/${student.id}`}>
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div>
