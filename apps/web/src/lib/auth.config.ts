@@ -12,29 +12,28 @@ const userSchema = z.object({
 export default {
   providers: [
     Credentials({
-      name: 'Demo',
+      name: 'credentials',
       credentials: {
         email: { label: 'Adresse e-mail', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const result = userSchema.safeParse(credentials);
-        if (!result.success) {
-          return null;
-        }
+        if (!result.success) return null
 
         const res = await api.auth.login({
           email: result.data?.email,
           password: result.data?.password,
         });
-
         if (!res) return null;
 
         return {
           id: res.professor.id.toString(),
           email: res.professor.email,
           firstName: res.professor.firstName,
-          department: res.professor.department
+          lastName: res.professor.lastName,
+          department: res.professor.department,
+          apiToken: res.token,
         };
       },
     }),
@@ -49,7 +48,9 @@ export default {
         token.id = user.id;
         token.email = user.email;
         token.firstName = user.firstName;
+        token.lastName = user.lastName;
         token.department = user.department;
+        token.apiToken = user.apiToken;
       }
       return token;
     },
@@ -57,8 +58,17 @@ export default {
       session.user.id = token.id as string;
       session.user.email = token.email as string;
       session.user.firstName = token.firstName as string;
+      session.user.lastName = token.lastName as string;
       session.user.department = token.department as string;
+      session.user.apiToken = token.apiToken as string;
       return session;
     },
   },
+  jwt: {
+    maxAge: 60 * 60 * 24, // 24 hours
+  },
+  pages: {
+    signIn: '/',
+  },
+  secret: process.env.JWT_SECRET || 'secret',
 } satisfies NextAuthConfig;
