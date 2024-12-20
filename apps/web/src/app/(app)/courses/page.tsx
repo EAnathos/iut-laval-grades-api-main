@@ -1,16 +1,15 @@
 import { Button } from "@web/components/ui/button";
-import { AddCourse } from "@web/components/forms/add-course";
 import { Dialog, DialogTrigger, DialogContent, DialogOverlay } from "@web/components/ui/dialog";
+import { AddCourse } from "@web/components/forms/add-course";
+import { CourseTable } from "@web/components/courses-table";
+
 import { getUser } from "@web/lib/auth";
 import api from "@web/lib/api";
 import { User } from "next-auth";
-import { CourseTable } from "@web/components/courses-table";
 
 export default async function Courses() {
   const user: User | null = await getUser();
   if (!user) throw new Error("Utilisateur non connecté.");
-
-  console.log(user);
 
   const courses = await api.courses.getAll(user);
   if (!courses) throw new Error("Impossible de récupérer les cours.");
