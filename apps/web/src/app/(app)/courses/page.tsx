@@ -6,13 +6,6 @@ import api from "@web/lib/api";
 import { User } from "next-auth";
 import { CourseTable } from "@web/components/courses-table";
 
-interface Course {
-  id: number;
-  code: string;
-  name: string;
-  credits: number;
-}
-
 export default async function Courses() {
   const user: User | null = await getUser();
   if (!user) throw new Error("Utilisateur non connecté.");
