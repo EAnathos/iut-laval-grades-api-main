@@ -22,7 +22,12 @@ export interface Grade {
   grade: number;
   semester: string;
   academicYear: string;
+  studentFirstName: string;
+  studentLastName: string;
+  courseCode: string;
+  courseName: string;
 }
+
 
 export interface Professor {
   id: number;

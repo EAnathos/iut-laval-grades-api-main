@@ -40,10 +40,14 @@ const api = {
     async getAll(user: User) {
       return fetchApi<Student[]>('/students', {}, user?.apiToken);
     },
-    async create(user: User, student: Omit<Student, 'id'>) {
+    async get(user: User, studentId: string) {
+      return fetchApi<Student>(`/students/${studentId}`, {}, user?.apiToken);
+    },
+    async create(user: User, student: Omit<Student, 'id' | 'dateOfBirth'> & { dateOfBirth: string }) {
+      console.log(student);
       return fetchApi<Student>('/students', {
-        method: 'POST',
-        body: JSON.stringify(student),
+      method: 'POST',
+      body: JSON.stringify(student),
       }, user?.apiToken);
     }
   },
@@ -79,7 +83,7 @@ const api = {
         body: JSON.stringify(grade),
       }, user?.apiToken);
     },
-    async get(user: User, studentId: string) {
+    async get(user: User, studentId: number) {
       return fetchApi<Grade>(`/grades/student/${studentId}`, {}, user?.apiToken);
     },
     async update(user: User, grade: Grade) {

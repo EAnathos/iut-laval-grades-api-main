@@ -1,16 +1,12 @@
 import { ArrowLeft, Download } from 'lucide-react'
 import { Button } from "@web/components/ui/button"
 import Link from "next/link"
+import { Student } from '@web/types'
+
+
 
 interface StudentDetailsProps {
-  student: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    dateOfBirth: string;
-    studentId: string;
-  }
+  student: Student;
 }
 
 export function StudentDetails({ student }: StudentDetailsProps) {
@@ -44,7 +40,7 @@ export function StudentDetails({ student }: StudentDetailsProps) {
             <label className="text-sm font-medium text-gray-600">
               Date de naissance
             </label>
-            <p className="mt-1">{student.dateOfBirth}</p>
+            <p className="mt-1">{student.dateOfBirth.toString()}</p>
           </div>
         </div>
       </div>

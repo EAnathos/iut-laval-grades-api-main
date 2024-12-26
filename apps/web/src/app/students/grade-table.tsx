@@ -1,4 +1,3 @@
-'use client';
 import { Pencil, Trash2 } from 'lucide-react'
 import {
     Table,
@@ -9,47 +8,20 @@ import {
     TableRow,
 } from "@web/components/ui/table"
 import { Button } from "@web/components/ui/button"
-import React, { useEffect } from 'react';
-
-export interface Grade {
-    id: number;
-    studentId: number;
-    courseId: number;
-    grade: number;
-    semester: string;
-    academicYear: string;
-    studentFirstName: string;
-    studentLastName: string;
-    courseCode: string;
-    courseName: string;
-}
+import React from 'react';
+import api from '@web/lib/api';
+import { getUser } from '@web/lib/auth';
+import { Grade } from '@web/types';
 
 interface GradesTableProps {
-    studentId: string;
+    studentId: number;
 }
 
-export function GradesTable({ studentId }: GradesTableProps) {
-    const [grades, setGrades] = React.useState<Grade[]>([]);
-
-    const fetchGrade = async () => {
-        try {
-          const response = await fetch(`http://localhost:4000/api/grades/student/${studentId}`);
-          if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des cours');
-          }
-          const data: Grade[] = await response.json();
-          setGrades(data);
-        } catch (error) {
-          console.error('Erreur:', error);
-          //setError('Impossible de charger les cours')
-        } finally {
-          //setIsLoading(false)
-        }
-      }
-
-    useEffect(() => {
-        fetchGrade();
-    }, [studentId])
+export async function GradesTable({ studentId }: GradesTableProps) {
+    const user = await getUser();
+    if (!user) return null;
+    const gradesResponse = await api.grades.get(user, studentId);
+    const grades: Grade[] = Array.isArray(gradesResponse) ? gradesResponse : [];
     
     return (
         <div className="rounded-lg border bg-white">
@@ -64,7 +36,7 @@ export function GradesTable({ studentId }: GradesTableProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {grades.map((grade) => (
+                    {grades.map((grade: Grade) => (
                         <TableRow key={grade.id}>
                             <TableCell>
                                 <div>
