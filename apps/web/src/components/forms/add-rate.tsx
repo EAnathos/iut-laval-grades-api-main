@@ -35,10 +35,10 @@ import { createGradeAction } from '@web/actions/grades/grades.actions';
 import { User } from 'next-auth';
 
 const formSchema = z.object({
-  student: z.string({
+  studentId: z.string({
     required_error: 'Veuillez séléctionner un étudiant.',
   }),
-  course: z.string({
+  courseId: z.string({
     required_error: 'Veuillez séléctionner une ressource.',
   }),
   grade: z.coerce
@@ -57,29 +57,29 @@ const formSchema = z.object({
   }),
   academicYear: z.string({
     required_error: 'Veuillez saisir une année académique.',
-  }), // .regex(/^\d{4}-\d{4}$/)
+  }),
 });
 
 type AddRateProps = {
   idStudent?: Student['id'];
   idCourse?: Course['id'];
   students: Student[] | null;
-  user: User;
+  courses: Course[] | null;
 };
 
 export const AddRate = ({
   idStudent,
   idCourse,
   students = [],
-  user,
+  courses = [],
 }: AddRateProps) => {
   const [isTransition, setTransition] = useTransition();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      student: idStudent ? idStudent.toString() : undefined,
-      course: idCourse ? idCourse.toString() : undefined,
+      studentId: idStudent ? idStudent.toString() : undefined,
+      courseId: idCourse ? idCourse.toString() : undefined,
       grade: undefined,
       semester: undefined,
       academicYear: undefined,
@@ -89,28 +89,20 @@ export const AddRate = ({
   function onSubmit(values: z.infer<typeof formSchema>) {
     setTransition(async () => {
       try {
-        const formattedValues = {
-          ...values,
-          idCourse: z.number().parse(values.course),
-          idStudent: z.number().parse(values.student),
-          academicYear:
-            values.academicYear.slice(0, 4) +
-            '-' +
-            values.academicYear.slice(4),
-        };
 
-        toast.info(formattedValues + 'f');
-
-        const formData = formSchema.parse(formattedValues);
-        const added = await createGradeAction(formData);
+        const formData = formSchema.parse(values);
+        const added = await createGradeAction({
+          ... formData,
+          studentId: parseInt(formData.studentId),
+          courseId: parseInt(formData.courseId),
+        });
 
         if (added) {
           form.reset();
         }
 
-        console.log(formattedValues);
       } catch (error) {
-        console.error('');
+        console.error((''));
         toast.error(
           "Une erreur s'est produite lors de la soumission du formulaire.",
         );
@@ -138,7 +130,7 @@ export const AddRate = ({
           {!idStudent ? (
             <FormField
               control={form.control}
-              name="student"
+              name="studentId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Etudiant</FormLabel>
@@ -168,7 +160,7 @@ export const AddRate = ({
           {!idCourse ? (
             <FormField
               control={form.control}
-              name="course"
+              name="courseId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Ressource</FormLabel>
@@ -178,17 +170,15 @@ export const AddRate = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Séléctionner une ressource" />
+                        <SelectValue placeholder="Séléctionner un cours" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="m@example.com">
-                        m@example.com
-                      </SelectItem>
-                      <SelectItem value="m@google.com">m@google.com</SelectItem>
-                      <SelectItem value="m@support.com">
-                        m@support.com
-                      </SelectItem>
+                      {courses?.map((course, index) => (
+                        <SelectItem key={index} value={course.id.toString()}>
+                          {course.code + ' ' + course.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

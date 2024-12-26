@@ -67,7 +67,7 @@ export const Header = ({firstName, lastName, department} : HeaderProps) => {
           )}
           asChild
         >
-          <Link href="/app/statistics">
+          <Link href="/statistics">
             <ChartNoAxesColumn size={24} className="text-muted" />
             Statistiques
           </Link>
