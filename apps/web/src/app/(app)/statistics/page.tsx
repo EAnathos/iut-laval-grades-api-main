@@ -20,18 +20,8 @@ export default async function Statistics() {
   const courses = await api.courses.getAll(user);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Ajouter une note</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Ajouter une note</DialogTitle>
-          <DialogDescription>
-            <AddRate idStudent={1} students={students} courses={courses} />
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+    <div>
+      <h1>Statistiques</h1>
+    </div>
   );
 }
