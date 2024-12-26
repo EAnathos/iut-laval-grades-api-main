@@ -48,7 +48,7 @@ export const studentController = {
         `
         INSERT INTO students (first_name, last_name, email, date_of_birth, student_id)
         VALUES ($1, $2, $3, $4, $5)
-        RETURNING 
+        RETURNING
           id,
           first_name as "firstName",
           last_name as "lastName",

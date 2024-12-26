@@ -43,6 +43,8 @@
   "packageManager": "npm@10.9.0",
   "dependencies": {
     "dotenv-cli": "^7.4.1",
+    "input-otp": "^1.4.1",
+    "lucide-react": "^0.469.0",
     "zod": "^3.24.1"
   }
 }
