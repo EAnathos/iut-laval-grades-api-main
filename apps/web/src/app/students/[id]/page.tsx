@@ -20,7 +20,7 @@ export default async function Student({ params }: StudentProps) {
   return (
     <div className="min-h-svh bg-muted ">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <pre>{JSON.stringify(student, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(student, null, 2)}</pre> */}
         <StudentDetails student={student} />
         <GradesTable studentId={student.id} />
       </div>

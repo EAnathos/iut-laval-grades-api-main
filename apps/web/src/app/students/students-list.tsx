@@ -24,7 +24,7 @@ export async function StudentsList() {
 
   return (
     <div className="p-6">
-      <pre>{JSON.stringify(students, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(students, null, 2)}</pre> */}
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Liste des étudiants</h1>
         <Dialog>
@@ -54,19 +54,19 @@ export async function StudentsList() {
       <div className="space-y-4">
         {students &&
           students.map(student => (
-            <Link key={student.id} href={`/students/${student.id}`}>
-              <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
-                  <h3 className="font-medium text-blue-600">
-                    {student.firstName} {student.lastName}
-                  </h3>
-                  <p className="text-sm text-gray-600">{student.email}</p>
-                </div>
-                <span className="rounded bg-blue-100 px-2 py-1 text-sm text-blue-800">
-                  {student.studentId}
-                </span>
-              </div>
-            </Link>
+        <Link key={student.id} href={`/students/${student.id}`}>
+          <div className="flex items-center justify-between rounded-lg border p-4 mb-4">
+            <div>
+          <h3 className="font-medium text-blue-600">
+            {student.firstName} {student.lastName}
+          </h3>
+          <p className="text-sm text-gray-600">{student.email}</p>
+            </div>
+            <span className="rounded bg-blue-100 px-2 py-1 text-sm text-blue-800">
+          {student.studentId}
+            </span>
+          </div>
+        </Link>
           ))}
       </div>
     </div>

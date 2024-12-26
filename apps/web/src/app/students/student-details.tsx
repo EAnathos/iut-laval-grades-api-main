@@ -11,7 +11,7 @@ interface StudentDetailsProps {
 
 export function StudentDetails({ student }: StudentDetailsProps) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mb-4">
       <div className="flex items-center gap-2 text-gray-600">
         <ArrowLeft className="h-4 w-4" />
         <Link href="/students" className="text-sm hover:underline">
