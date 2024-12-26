@@ -44,7 +44,6 @@ const api = {
       return fetchApi<Student>(`/students/${studentId}`, {}, user?.apiToken);
     },
     async create(user: User, student: Omit<Student, 'id' | 'dateOfBirth'> & { dateOfBirth: string }) {
-      console.log(student);
       return fetchApi<Student>('/students', {
       method: 'POST',
       body: JSON.stringify(student),
