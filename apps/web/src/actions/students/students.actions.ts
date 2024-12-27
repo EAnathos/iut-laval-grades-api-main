@@ -3,6 +3,7 @@
 import api from "@web/lib/api";
 import { getUser } from "@web/lib/auth";
 import { Student } from "@web/types";
+import { revalidatePath } from "next/cache";
 
 export const createStudentAction = async (form: Omit<Student, 'id'>) => {
   const user = await getUser();
@@ -31,6 +32,9 @@ export const createStudentAction = async (form: Omit<Student, 'id'>) => {
     };
 
     const createdStudent = await api.students.create(user, formattedForm);
+
+    revalidatePath('/students');
+
     return {status: 200 , message: createdStudent};
   } catch (error) {
     console.error('Error creating student', error);
