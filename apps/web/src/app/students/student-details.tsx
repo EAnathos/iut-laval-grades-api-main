@@ -40,7 +40,7 @@ export function StudentDetails({ student }: StudentDetailsProps) {
             <label className="text-sm font-medium text-gray-600">
               Date de naissance
             </label>
-            <p className="mt-1">{student.dateOfBirth.toString()}</p>
+            <p className="mt-1">{new Date(student.dateOfBirth).toLocaleDateString('fr-FR')}</p>
           </div>
         </div>
       </div>
