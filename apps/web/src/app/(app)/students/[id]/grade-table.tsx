@@ -24,7 +24,7 @@ import {
 } from '@web/components/ui/dialog';
 import { AddRate } from '@web/components/forms/add-rate';
 import { UpdateRate } from '@web/components/forms/update-rate';
-import { GradeTableRow } from '../../../components/grade-tablerow';
+import { GradeTableRow } from '../../../../components/grade-tablerow';
 
 interface GradesTableProps {
     student: Student;
