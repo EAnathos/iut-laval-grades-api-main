@@ -91,12 +91,12 @@ const api = {
         body: JSON.stringify(grade),
       }, user?.apiToken);
     },
-    async delete(user: User, gradeId: string) {
-      return fetchApi(`/grades/${gradeId}`, {
+    async delete(user: User, gradeId: number) {
+      fetchApi(`/grades/${gradeId}`, {
         method: 'DELETE',
       }, user?.apiToken);
     },
-    async releve(user: User, studentId: string) {
+    async releve(user: User, studentId: number) {
       return fetchApi(`/grades/student/${studentId}/transcript`, {}, user?.apiToken);
     }
   },

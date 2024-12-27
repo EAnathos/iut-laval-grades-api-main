@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from '@web/components/ui/select';
 import { DialogClose } from '@web/components/ui/dialog';
-import { Course, Student } from '@web/types';
+import { Course, Grade, Student } from '@web/types';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
@@ -63,13 +63,15 @@ const formSchema = z.object({
 type AddRateProps = {
   idStudent?: Student['id'];
   idCourse?: Course['id'];
+  grade: Grade;
   students?: Student[] | null;
   courses?: Course[] | null;
 };
 
-export const AddRate = ({
+export const UpdateRate = ({
   idStudent,
   idCourse,
+  grade,
   students = [],
   courses = [],
 }: AddRateProps) => {
@@ -79,20 +81,19 @@ export const AddRate = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       studentId: idStudent ? idStudent.toString() : undefined,
-      courseId: idCourse ? idCourse.toString() : undefined,
-      grade: undefined,
-      semester: undefined,
-      academicYear: undefined,
+      courseId: grade.courseId ? grade.courseId.toString() : undefined,
+      grade: grade.grade,
+      semester: grade.semester,
+      academicYear: grade.academicYear,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setTransition(async () => {
       try {
-
         const formData = formSchema.parse(values);
         const added = await createGradeAction({
-          ... formData,
+          ...formData,
           studentId: parseInt(formData.studentId),
           courseId: parseInt(formData.courseId),
         });
@@ -100,9 +101,8 @@ export const AddRate = ({
         if (added) {
           form.reset();
         }
-
       } catch (error) {
-        console.error((''));
+        console.error('');
         toast.error(
           "Une erreur s'est produite lors de la soumission du formulaire.",
         );
@@ -122,6 +122,10 @@ export const AddRate = ({
       </div>
     );
   }
+
+  console.log('students', students);
+    console.log('courses', courses);
+    console.log('grade', grade);
 
   return (
     <div>
@@ -157,36 +161,33 @@ export const AddRate = ({
             />
           ) : null}
 
-          {!idCourse ? (
-            <FormField
-              control={form.control}
-              name="courseId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ressource</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Séléctionner un cours" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {courses?.map((course, index) => (
-                        <SelectItem key={index} value={course.id.toString()}>
-                          {course.code + ' ' + course.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ) : null}
-
+          <FormField
+            control={form.control}
+            name="courseId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ressource</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Séléctionner un cours" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {courses?.map((course, index) => (
+                      <SelectItem key={index} value={course.id.toString()}>
+                        {course.code + ' ' + course.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="grade"
