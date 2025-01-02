@@ -2,6 +2,7 @@
 
 import { Check, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { useQueryState } from 'nuqs';
 
 import { Button } from '@web/components/ui/button';
 import {
@@ -18,21 +19,28 @@ import {
   PopoverTrigger,
 } from '@web/components/ui/popover';
 import { cn } from '@web/lib/utils';
-import { Course } from '@web/types';
 
-type SelectSearchProps = {
-  courses: Course[];
+type Student = {
+  name: string;
+  surname: string;
+  id: string;
 };
 
-export default function SelectSearchCourses({
-  courses,
-}: SelectSearchProps) {
+export default function SelectSearchStudent({
+  students,
+}: {
+    students: Student[];
+}) {
+  const [selectedStudentId, setSelectedStudentId] = useQueryState('studentId');
   const [open, setOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
-  const filteredCourses = courses.filter(course =>
-    `${course.code} - ${course.name}`
+  const selectedStudent = students.find(
+    student => student.id === selectedStudentId,
+  );
+
+  const filteredStudents = students.filter(student =>
+    `${student.name} - ${student.surname}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase()),
   );
@@ -42,7 +50,7 @@ export default function SelectSearchCourses({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            id="select-course"
+            id="select-student"
             variant="outline"
             role="combobox"
             aria-expanded={open}
@@ -51,10 +59,12 @@ export default function SelectSearchCourses({
             <span
               className={cn(
                 'truncate',
-                !selectedCourse && 'text-muted-foreground',
+                !selectedStudent && 'text-muted-foreground',
               )}
             >
-              {selectedCourse ? `${selectedCourse.code} - ${selectedCourse.name}` : 'Selectionner un cours'}
+              {selectedStudent
+                ? `${selectedStudent.name} - ${selectedStudent.surname}`
+                : 'Selectionner un cours'}
             </span>
             <ChevronDown
               size={16}
@@ -71,25 +81,25 @@ export default function SelectSearchCourses({
           <Command>
             <CommandInput
               placeholder="Chercher un cours"
-              value={searchTerm} 
-              onValueChange={value => setSearchTerm(value)} 
+              value={searchTerm}
+              onValueChange={value => setSearchTerm(value)}
             />
             <CommandList>
               <CommandEmpty>Aucun cours trouvé.</CommandEmpty>
               <CommandGroup>
-                {filteredCourses.map(course => (
+                {filteredStudents.map(student => (
                   <CommandItem
-                    key={course.id}
-                    value={`${course.code} - ${course.name}`}  
-                    onSelect={() => {
-                      setSelectedCourse(
-                        selectedCourse?.id === course.id ? null : course  
+                    key={student.id}
+                    value={`${student.name} - ${student.surname}`}
+                    onSelect={ async () => {
+                      setSelectedStudentId(
+                        selectedStudent?.id === student.id ? null : student.id,
                       );
                       setOpen(false);
                     }}
                   >
-                    {`${course.code} - ${course.name}`}
-                    {selectedCourse?.id === course.id && (
+                    {`${student.name} - ${student.surname}`}
+                    {selectedStudent?.id === student.id && (
                       <Check size={16} strokeWidth={2} className="ml-auto" />
                     )}
                   </CommandItem>

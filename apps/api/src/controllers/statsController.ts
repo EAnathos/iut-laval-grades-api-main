@@ -20,7 +20,7 @@ export const statsController = {
           COALESCE(COUNT(CASE WHEN g.grade >= 10 THEN 1 END)::float / NULLIF(COUNT(*), 0)::float * 100, 0) as "successRate"
         FROM courses c
         LEFT JOIN grades g ON g.course_id = c.id AND g.academic_year = $2
-        WHERE c.id = $1
+        WHERE c.code = $1
         GROUP BY c.id, c.code, c.name
       `,
         [courseId, academicYear]
