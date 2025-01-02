@@ -2,7 +2,7 @@ import api from '@web/lib/api';
 import { getUser } from '@web/lib/auth';
 import { Box } from '@web/app/(app)/statistics/box';
 import getAcademicYear from '@web/utils/get-academic-year';
-import SelectSearch from '@web/components/select-search';
+import SelectSearchCourses from '@web/components/select-search-courses';
 
 export default async function Statistics() {
   const user = await getUser();
@@ -79,7 +79,7 @@ export default async function Statistics() {
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Statistiques par Cours
             </h2>
-            {/* <SelectSearch courses={courses} /> */}
+            <SelectSearchCourses courses={courses} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Box
                 title="Moyenne du Cours"

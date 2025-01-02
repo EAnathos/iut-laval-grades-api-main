@@ -24,7 +24,7 @@ type SelectSearchProps = {
   courses: Course[];
 };
 
-export default function SelectSearch({
+export default function SelectSearchCourses({
   courses,
 }: SelectSearchProps) {
   const [open, setOpen] = useState<boolean>(false);
