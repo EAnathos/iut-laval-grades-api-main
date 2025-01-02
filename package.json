@@ -8,6 +8,7 @@
     "dev": "dotenv -- turbo dev",
     "start": "dotenv -- turbo start",
     "build": "dotenv -- turbo build",
+    "test": "dotenv -- turbo test",
     "build:web": "dotenv -- turbo build --filter=web",
     "build:api": "dotenv -- turbo build --filter=api",
     "db:dev": "dotenv -- turbo db:dev --filter=api",
