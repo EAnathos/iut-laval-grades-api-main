@@ -1,8 +1,7 @@
 'server-only';
 
 const apiBaseUrl = process.env.API_URL;
-import { Course, Grade, LoginCredentials, Professor, Student } from '@web/types';
-import { auth } from './auth';
+import { Course, CourseStats, GlobalStats, Grade, LoginCredentials, Professor, Student, StudentSemesterStats } from '@web/types';
 import { User } from 'next-auth';
 
 const fetchApi = async <T>(
@@ -101,14 +100,14 @@ const api = {
     }
   },
   stats: {
-    async get(user: User) {
-      return fetchApi('/stats/global', {}, user?.apiToken);
+    async get(user: User, academicYear: string) {
+      return fetchApi<GlobalStats>(`/stats/global?academicYear=${academicYear}`, {}, user?.apiToken);
     },
-    async course(user: User, courseId: string) {
-      return fetchApi(`/stats/course/${courseId}`, {}, user?.apiToken);
+    async course(user: User, courseId: string, academicYear: string) {
+      return fetchApi<CourseStats>(`/stats/course/${courseId}?academicYear=${academicYear}`, {}, user?.apiToken);
     },
-    async student(user: User, studentId: string) {
-      return fetchApi(`/stats/student/${studentId}`, {}, user?.apiToken);
+    async student(user: User, studentId: string, academicYear: string) {
+      return fetchApi<StudentSemesterStats[]>(`/stats/student/${studentId}?academicYear=${academicYear}`, {}, user?.apiToken);
     },
   },
   fetchApi,
