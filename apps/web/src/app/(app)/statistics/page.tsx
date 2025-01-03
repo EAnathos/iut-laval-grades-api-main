@@ -1,27 +1,46 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@web/components/ui/dialog';
-import { AddRate } from '@web/components/forms/add-rate';
-import api from '@web/lib/api';
+import { CoursesStats } from '@web/components/statistics/courses-stats';
+import { GlobalStats } from '@web/components/statistics/global-stats';
+import { StudentsStats } from '@web/components/statistics/students-stats';
 import { getUser } from '@web/lib/auth';
-import { Button } from '@web/components/ui/button';
+import { getAcademicYear } from '@web/utils/get-academic-year';
+import { Suspense } from 'react';
 
-export default async function Statistics() {
+type Args = {
+  searchParams: {
+    courseId?: string;
+    studentId?: string;
+  };
+};
+
+export default async function StatisticsPage({ searchParams }: Args) {
   const user = await getUser();
   if (!user) return null;
-
-  const students = await api.students.getAll(user);
-
-  const courses = await api.courses.getAll(user);
+  const academicYear = getAcademicYear();
 
   return (
-    <div>
-      <h1>Statistiques</h1>
+    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div className="space-y-8 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Statistiques</h1>
+        <div className="grid grid-cols-1 gap-8">
+          <Suspense fallback={<div>Chargement...</div>}>
+            <GlobalStats user={user} academicYear={academicYear} />
+          </Suspense>
+        </div>
+      </div>
+      <div className="space-y-8 mb-6">
+        <div className="grid grid-cols-1 gap-8">
+          <Suspense fallback={<div>Chargement...</div>}>
+            <CoursesStats user={user} academicYear={academicYear} courseId={searchParams.courseId} />
+          </Suspense>
+        </div>
+      </div>
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 gap-8">
+          <Suspense fallback={<div>Chargement...</div>}>
+            <StudentsStats user={user} academicYear={academicYear} studentId={searchParams.studentId} />
+          </Suspense>
+        </div>
+      </div>
     </div>
   );
 }
