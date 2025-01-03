@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from '@web/components/ui/popover';
 import { cn } from '@web/lib/utils';
+import { useRouter } from 'next/navigation';
 
 type Course = {
   label: string;
@@ -33,6 +34,7 @@ export default function SelectSearchCourses({
   const [selectedCourseValue, setSelectedCourseValue] = useQueryState('courseId');
   const [open, setOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const router = useRouter();
 
   const selectedCourse = courses.find(
     course => course.value === selectedCourseValue,
@@ -90,10 +92,11 @@ export default function SelectSearchCourses({
                   <CommandItem
                     key={course.value}
                     value={`${course.value} - ${course.label}`}
-                    onSelect={ async () => {
-                      setSelectedCourseValue(
+                    onSelect={async () => {
+                      await setSelectedCourseValue(
                         selectedCourse?.value === course.value ? null : course.value,
                       );
+                      router.refresh();
                       setOpen(false);
                     }}
                   >

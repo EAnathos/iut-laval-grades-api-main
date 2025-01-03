@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from '@web/components/ui/popover';
 import { cn } from '@web/lib/utils';
+import { useRouter } from 'next/navigation';
 
 type Student = {
   name: string;
@@ -34,6 +35,7 @@ export default function SelectSearchStudent({
   const [selectedStudentId, setSelectedStudentId] = useQueryState('studentId');
   const [open, setOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const router = useRouter();
 
   const selectedStudent = students.find(
     student => student.id === selectedStudentId,
@@ -91,10 +93,11 @@ export default function SelectSearchStudent({
                   <CommandItem
                     key={student.id}
                     value={`${student.name} - ${student.surname}`}
-                    onSelect={ async () => {
-                      setSelectedStudentId(
+                    onSelect={async() => {
+                      await setSelectedStudentId(
                         selectedStudent?.id === student.id ? null : student.id,
                       );
+                      router.refresh();
                       setOpen(false);
                     }}
                   >

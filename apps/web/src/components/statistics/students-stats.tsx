@@ -17,14 +17,9 @@ export const StudentsStats = async ({ user, academicYear, studentId }: StudentsS
 
   const students = await api.students.getAll(user);
   if (!students) return <div>Erreur lors du chargement des cours</div>;
-
-  let nCourses = 0;
-  let nCredits = 0;
-
-  studentStats?.forEach(studentStat => {
-    nCourses += studentStat.coursesCount;
-    nCredits += studentStat.validatedCredits;
-  });
+  
+  const nCourses = studentStats?.reduce((acc, stat) => acc + Number(stat.coursesCount), 0) || 0;
+  const nCredits = studentStats?.reduce((acc, stat) => acc + Number(stat.validatedCredits), 0) || 0;
 
   return (
     <div>
