@@ -1,4 +1,6 @@
-const getAcademicYear = (): string => {
+import { cache } from "react";
+
+export const getAcademicYear = cache((): string => {
     const date = new Date();
     const month = date.getMonth();
 
@@ -7,6 +9,4 @@ const getAcademicYear = (): string => {
     } else {
         return `${date.getFullYear() - 1}-${date.getFullYear()}`;
     }
-};
-
-export default getAcademicYear;
+});
