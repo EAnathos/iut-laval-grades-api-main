@@ -58,6 +58,7 @@ export const gradeController = {
       semester,
       academicYear,
     }: CreateGradeInput = req.body;
+    
     try {
       const studentExists = await pool.query(
         'SELECT id FROM students WHERE id = $1',

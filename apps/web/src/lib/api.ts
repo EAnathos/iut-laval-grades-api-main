@@ -100,14 +100,14 @@ const api = {
     }
   },
   stats: {
-    async get(user: User) {
-      return fetchApi<GlobalStats>('/stats/global', {}, user?.apiToken);
+    async get(user: User, academicYear: string) {
+      return fetchApi<GlobalStats>(`/stats/global?academicYear=${academicYear}`, {}, user?.apiToken);
     },
-    async course(user: User, courseId: string) {
-      return fetchApi<CourseStats>(`/stats/course/${courseId}`, {}, user?.apiToken);
+    async course(user: User, courseId: string, academicYear: string) {
+      return fetchApi<CourseStats>(`/stats/course/${courseId}?academicYear=${academicYear}`, {}, user?.apiToken);
     },
-    async student(user: User, studentId: string) {
-      return fetchApi<StudentSemesterStats[]>(`/stats/student/${studentId}`, {}, user?.apiToken);
+    async student(user: User, studentId: string, academicYear: string) {
+      return fetchApi<StudentSemesterStats[]>(`/stats/student/${studentId}?academicYear=${academicYear}`, {}, user?.apiToken);
     },
   },
   fetchApi,

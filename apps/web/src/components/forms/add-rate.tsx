@@ -63,8 +63,8 @@ const formSchema = z.object({
 type AddRateProps = {
   idStudent?: Student['id'];
   idCourse?: Course['id'];
-  students?: Student[] | null;
-  courses?: Course[] | null;
+  students: Student[] | null;
+  courses: Course[] | null;
 };
 
 export const AddRate = ({
