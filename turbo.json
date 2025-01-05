@@ -46,6 +46,13 @@
     },
     "test": {
       "cache": false
+    },
+    "dev:test": {
+      "cache": false
+    },
+    "e2e:test": {
+      "dependsOn": ["^build"],
+      "cache": false
     }
   }
 }
