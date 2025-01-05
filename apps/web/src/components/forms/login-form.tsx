@@ -20,7 +20,10 @@ import { useTransition } from "react";
 import { signInAction } from "@web/actions/auth/auth.actions";
 
 const formSchema = z.object({
-  email: z.string().email({
+  email: z.string({
+    message: "Veuillez saisir une adresse e-mail.",
+    required_error: "Veuillez saisir une adresse e-mail."
+  }).email({
     message: "Veuillez saisir une adresse e-mail valide."
   }).max(256, {
     message: "L'adresse e-mail ne doit pas dépasser 256 caractères."
