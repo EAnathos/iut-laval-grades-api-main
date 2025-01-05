@@ -102,7 +102,6 @@ export const UpdateRate = ({
           form.reset();
         }
       } catch (error) {
-        console.error('');
         toast.error(
           "Une erreur s'est produite lors de la soumission du formulaire.",
         );
@@ -122,10 +121,6 @@ export const UpdateRate = ({
       </div>
     );
   }
-
-  console.log('students', students);
-    console.log('courses', courses);
-    console.log('grade', grade);
 
   return (
     <div>

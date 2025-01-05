@@ -20,11 +20,9 @@ export async function StudentsList() {
   const user = await getUser();
   if (!user) return null;
   const students = await api.students.getAll(user);
-  console.log(students);
 
   return (
     <div className="p-6">
-      {/* <pre>{JSON.stringify(students, null, 2)}</pre> */}
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Liste des étudiants</h1>
         <Dialog>
