@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "dev:test": "dotenv -e ../../.env -- playwright test",
-    "e2e:test": "dotenv -e ../../.env -- start-server-and-test \"(npm run start)\" http://localhost:3000 \"playwright test\""
+    "e2e:test": "dotenv -e ../../.env -- playwright test"
   },
   "dependencies": {
     "start-server-and-test": "^2",
