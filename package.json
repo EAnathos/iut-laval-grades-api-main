@@ -18,7 +18,8 @@
     "db:push": "dotenv -- turbo db:push --filter=api",
     "db:pull": "dotenv -- turbo db:pull --filter=api",
     "db:studio": "dotenv -- turbo db:studio --filter=api",
-    "e2e:test": "turbo run e2e:test"
+    "dev:test": "dotenv -- turbo dev:test",
+    "e2e:test": "dotenv -- turbo run e2e:test"
   },
   "keywords": [
     "monorepo",
