@@ -24,7 +24,7 @@ export default async function AppHome() {
           {/*<Button type="submit">Sign Out</Button>*/}
         </form>
       </div>
-      <pre>{JSON.stringify(students, null, 2)}</pre>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   )
 }

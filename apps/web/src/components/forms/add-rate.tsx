@@ -63,7 +63,7 @@ const formSchema = z.object({
 type AddRateProps = {
   idStudent?: Student['id'];
   idCourse?: Course['id'];
-  students: Student[] | null;
+  students?: Student[] | null;
   courses: Course[] | null;
 };
 
@@ -91,10 +91,17 @@ export const AddRate = ({
       try {
 
         const formData = formSchema.parse(values);
+        const student = students?.find(s => s.id.toString() === formData.studentId);
+        const course = courses?.find(c => c.id.toString() === formData.courseId);
+
         const added = await createGradeAction({
-          ... formData,
+          ...formData,
           studentId: parseInt(formData.studentId),
           courseId: parseInt(formData.courseId),
+          studentFirstName: student?.firstName || '',
+          studentLastName: student?.lastName || '',
+          courseCode: course?.code || '',
+          courseName: course?.name || '',
         });
 
         if (added) {
