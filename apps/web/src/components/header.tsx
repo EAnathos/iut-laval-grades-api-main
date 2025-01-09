@@ -14,12 +14,12 @@ import { cn } from '@web/lib/utils';
 import { signOutAction } from '@web/actions/auth/auth.actions';
 
 type HeaderProps = {
-  firstName: string;
-  lastName: string;
-  department: string;
+    firstName: string;
+    lastName: string;
+    department: string;
 }
 
-export const Header = ({ firstName, lastName, department }: HeaderProps) => {
+export const Header = ({firstName, lastName, department} : HeaderProps) => {
   const pathname = usePathname();
 
   return (
@@ -79,6 +79,7 @@ export const Header = ({ firstName, lastName, department }: HeaderProps) => {
             'hover:bg-[#A80059] hover:text-muted ',
             pathname === '/students' ? 'bg-[#A80059]' : '',
           )}
+          asChild
           onClick={async () => {
             await signOutAction({
               redirect: true,
@@ -86,8 +87,10 @@ export const Header = ({ firstName, lastName, department }: HeaderProps) => {
             });
           }}
         >
-          <LogOut size={24} className="text-muted" />
-          Déconnexion
+          <Link href="/">
+            <LogOut size={24} className="text-muted" />
+            Déconnexion
+          </Link>
         </Button>
       </div>
     </header>
