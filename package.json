@@ -19,7 +19,8 @@
     "db:pull": "dotenv -- turbo db:pull --filter=api",
     "db:studio": "dotenv -- turbo db:studio --filter=api",
     "dev:test": "dotenv -- turbo dev:test",
-    "e2e:test": "dotenv -- turbo run e2e:test"
+    "e2e:test": "dotenv -- turbo run e2e:test",
+    "lint": "dotenv -- turbo lint"
   },
   "keywords": [
     "monorepo",
