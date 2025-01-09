@@ -46,7 +46,7 @@ export function GradesTable({ student, courses, grades }: GradesTableProps) {
                         <DialogHeader>
                             <DialogTitle> Ajouter une note</DialogTitle>
                             <DialogDescription>
-                                <AddRate idStudent={student.id} courses={courses}  />
+                                <AddRate idStudent={student.id} courses={courses} />
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>
