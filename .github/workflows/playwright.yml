@@ -20,6 +20,8 @@ jobs:
         fi
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Build project
+      run: npm run build
     - name: Start backend
       run: npm run start &
     - name: Run Playwright tests
