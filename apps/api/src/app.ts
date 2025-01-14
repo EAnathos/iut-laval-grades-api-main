@@ -24,7 +24,7 @@ app.use(httpLogger);
 app.use(express.json());
 
 app.get('/health', (req, res) => {
-  res.send('OK');
+  res.status(200).json({ status: 'UP' });
 });
 
 // Documentation API
