@@ -176,7 +176,7 @@ export const AddStudent = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" className="w-full">Ajouter</Button>
         </form>
       </Form>
     </div>
