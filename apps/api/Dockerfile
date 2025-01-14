@@ -19,12 +19,13 @@ WORKDIR /src
 # Install node modules
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --include=dev
+
+# Install TypeScript
+RUN npm install -g typescript
 
 # Copy application code
 COPY --link . .
-
-RUN npm run db:generate
 
 # Build application
 RUN npm run build
