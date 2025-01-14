@@ -23,6 +23,10 @@ app.use(helmet());
 app.use(httpLogger);
 app.use(express.json());
 
+app.get('/health', (req, res) => {
+  res.send('OK');
+});
+
 // Documentation API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

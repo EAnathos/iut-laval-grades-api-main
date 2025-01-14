@@ -6,7 +6,8 @@ FROM node:${NODE_VERSION}-alpine as base
 
 LABEL fly_launch_runtime="api"
 
-WORKDIR /src
+# NestJS app lives here
+WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV=production
@@ -14,25 +15,29 @@ ENV NODE_ENV=production
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-WORKDIR /src
+WORKDIR /app
+
+# Copy only package.json and package-lock.json first
+COPY ./package.json ./
 
 # Install node modules
-COPY package*.json ./
-
 RUN npm install --include=dev
 
-# Install TypeScript
+# Ensure TypeScript is installed globally
 RUN npm install -g typescript
 
-# Copy application code
-COPY --link . .
+# Copy the rest of the application code
+COPY . .
 
 # Build application
 RUN npm run build
 
 FROM base
 
-COPY --from=build /src /src
+WORKDIR /app
+
+# Copy build output and node_modules from build stage
+COPY --from=build /app /app
 
 EXPOSE 4000
 
