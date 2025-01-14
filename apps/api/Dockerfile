@@ -6,8 +6,7 @@ FROM node:${NODE_VERSION}-alpine as base
 
 LABEL fly_launch_runtime="api"
 
-# NestJS app lives here
-WORKDIR /app
+WORKDIR /src
 
 # Set production environment
 ENV NODE_ENV=production
@@ -15,7 +14,7 @@ ENV NODE_ENV=production
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-WORKDIR /app
+WORKDIR /src
 
 # Install node modules
 COPY package*.json ./
@@ -32,8 +31,8 @@ RUN npm run build
 
 FROM base
 
-COPY --from=build /app /app
+COPY --from=build /src /src
 
 EXPOSE 4000
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "npm", "run", "start" ]
