@@ -23,10 +23,6 @@ app.use(helmet());
 app.use(httpLogger);
 app.use(express.json());
 
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP' });
-});
-
 // Documentation API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
