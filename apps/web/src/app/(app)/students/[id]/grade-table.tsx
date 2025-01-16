@@ -1,19 +1,6 @@
 'use client';
-import { Check, Pencil, Trash2 } from 'lucide-react';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@web/components/ui/table';
+import { AddRate } from '@web/components/forms/add-rate';
 import { Button } from '@web/components/ui/button';
-import React, { useState } from 'react';
-import { Input } from '@web/components/ui/input';
-import api from '@web/lib/api';
-import { getUser } from '@web/lib/auth';
-import { Course, Grade, Student } from '@web/types';
 import {
     Dialog,
     DialogContent,
@@ -22,8 +9,14 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@web/components/ui/dialog';
-import { AddRate } from '@web/components/forms/add-rate';
-import { UpdateRate } from '@web/components/forms/update-rate';
+import {
+    Table,
+    TableBody,
+    TableHead,
+    TableHeader,
+    TableRow
+} from '@web/components/ui/table';
+import { Course, Grade, Student } from '@web/types';
 import { GradeTableRow } from '../../../../components/grade-tablerow';
 
 interface GradesTableProps {
@@ -46,7 +39,7 @@ export function GradesTable({ student, courses, grades }: GradesTableProps) {
                         <DialogHeader>
                             <DialogTitle> Ajouter une note</DialogTitle>
                             <DialogDescription>
-                                <AddRate idStudent={student.id} courses={courses}  />
+                                <AddRate idStudent={student.id} courses={courses} />
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>

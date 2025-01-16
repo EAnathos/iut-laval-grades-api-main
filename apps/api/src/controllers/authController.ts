@@ -52,6 +52,7 @@ export const authController = {
         },
       });
     } catch (error) {
+      res.json({ error: 'Erreur lors de la connexion' });
       throw new AppError(500, 'Erreur lors de la connexion', 'AUTH_ERROR');
     }
   },

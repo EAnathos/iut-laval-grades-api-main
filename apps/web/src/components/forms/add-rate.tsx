@@ -89,7 +89,6 @@ export const AddRate = ({
   function onSubmit(values: z.infer<typeof formSchema>) {
     setTransition(async () => {
       try {
-
         const formData = formSchema.parse(values);
         const student = students?.find(s => s.id.toString() === formData.studentId);
         const course = courses?.find(c => c.id.toString() === formData.courseId);
@@ -109,7 +108,6 @@ export const AddRate = ({
         }
 
       } catch (error) {
-        console.error((''));
         toast.error(
           "Une erreur s'est produite lors de la soumission du formulaire.",
         );
