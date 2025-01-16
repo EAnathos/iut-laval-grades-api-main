@@ -11,10 +11,9 @@ export const createStudentAction = async (form: Omit<Student, 'id'>) => {
 
   try {
     const students = await api.students.getAll(user);
-    console.log(students);
 
     if (!students) {
-      throw new Error('Failed to retrieve students');
+      return { status: 500, message: 'Une erreur s\'est produite lors de la récupération des étudiants' };
     }
 
     const emailExists = students.some(student => student.email === form.email);

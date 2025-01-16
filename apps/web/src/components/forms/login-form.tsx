@@ -1,23 +1,22 @@
 'use client';
 
-import { GalleryVerticalEnd } from "lucide-react";
+import { SchoolIcon } from "lucide-react";
 
 import {
   zodResolver
 } from "@hookform/resolvers/zod";
+import { signInAction } from "@web/actions/auth/auth.actions";
 import { Button } from "@web/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@web/components/ui/form";
 import { Input } from "@web/components/ui/input";
 import { cn } from "@web/lib/utils";
 import { LoaderCircle } from "lucide-react";
+import { useTransition } from "react";
 import {
   useForm
 } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { signIn } from "@web/lib/auth";
-import { useTransition } from "react";
-import { signInAction } from "@web/actions/auth/auth.actions";
 
 const formSchema = z.object({
   email: z.string({
@@ -57,7 +56,7 @@ export function LoginForm({
         await signInAction("credentials", {
           ...formData,
           redirect: true,
-          redirectTo: "/app"
+          redirectTo: "/students"
         });
       } catch (error) {
         console.error("Error signing in", error);
@@ -76,12 +75,12 @@ export function LoginForm({
                 href="#"
                 className="flex flex-col items-center gap-2 font-medium"
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                  <GalleryVerticalEnd className="size-6" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-md">
+                  <SchoolIcon className="size-10" />
                 </div>
-                <span className="sr-only">Acme Inc.</span>
+                <span className="sr-only">IUT de Laval</span>
               </a>
-              <h1 className="text-xl font-bold">Vous revoilà !</h1>
+              <h1 className="text-xl font-bold">IUT de Laval</h1>
             </div>
             <div className="flex flex-col gap-6">
               <FormField

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   SchoolIcon,
   Users,
@@ -14,14 +14,31 @@ import { cn } from '@web/lib/utils';
 import { signOutAction } from '@web/actions/auth/auth.actions';
 
 type HeaderProps = {
-    firstName: string;
-    lastName: string;
-    department: string;
-}
+  firstName: string;
+  lastName: string;
+  department: string;
+};
 
-export const Header = ({firstName, lastName, department} : HeaderProps) => {
+const NavLink = ({ href, icon: Icon, label }: { href: string; icon: any; label: string }) => {
   const pathname = usePathname();
+  return (
+    <Button
+      variant="ghost"
+      className={cn(
+        'hover:bg-[#A80059] hover:text-muted',
+        pathname === href ? 'bg-[#A80059]' : '',
+      )}
+      asChild
+    >
+      <Link href={href}>
+        <Icon size={24} className="text-muted" />
+        {label}
+      </Link>
+    </Button>
+  );
+};
 
+export const Header = ({ firstName, lastName, department }: HeaderProps) => {
   return (
     <header className="flex w-full bg-primary px-8 py-3.5 justify-between align-middle">
       <div className="flex items-center gap-2">
@@ -31,55 +48,12 @@ export const Header = ({firstName, lastName, department} : HeaderProps) => {
       </div>
 
       <div className="flex items-center justify-end gap-4 text-muted align-middle">
+        <NavLink href="/students" icon={Users} label="Étudiants" />
+        <NavLink href="/courses" icon={BookOpen} label="Cours" />
+        <NavLink href="/statistics" icon={ChartNoAxesColumn} label="Statistiques" />
         <Button
           variant="ghost"
-          className={cn(
-            'hover:bg-[#A80059] hover:text-muted ',
-            pathname === '/students' ? 'bg-[#A80059]' : '',
-          )}
-          asChild
-        >
-          <Link href="/students">
-            <Users size={24} className="text-muted" />
-            Étudiants{' '}
-          </Link>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className={cn(
-            'hover:bg-[#A80059] hover:text-muted ',
-            pathname === '/students' ? 'bg-[#A80059]' : '',
-          )}
-          asChild
-        >
-          <Link href="/courses">
-            <BookOpen size={24} className="text-muted" />
-            Cours
-          </Link>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className={cn(
-            'hover:bg-[#A80059] hover:text-muted ',
-            pathname === '/students' ? 'bg-[#A80059]' : '',
-          )}
-          asChild
-        >
-          <Link href="/statistics">
-            <ChartNoAxesColumn size={24} className="text-muted" />
-            Statistiques
-          </Link>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className={cn(
-            'hover:bg-[#A80059] hover:text-muted ',
-            pathname === '/students' ? 'bg-[#A80059]' : '',
-          )}
-          asChild
+          className="hover:bg-[#A80059] hover:text-muted"
           onClick={async () => {
             await signOutAction({
               redirect: true,
@@ -87,10 +61,8 @@ export const Header = ({firstName, lastName, department} : HeaderProps) => {
             });
           }}
         >
-          <Link href="/">
-            <LogOut size={24} className="text-muted" />
-            Déconnexion
-          </Link>
+          <LogOut size={24} className="text-muted" />
+          Déconnexion
         </Button>
       </div>
     </header>

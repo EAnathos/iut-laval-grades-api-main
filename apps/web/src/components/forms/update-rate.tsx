@@ -92,17 +92,23 @@ export const UpdateRate = ({
     setTransition(async () => {
       try {
         const formData = formSchema.parse(values);
+        const student = students?.find(s => s.id.toString() === formData.studentId);
+        const course = courses?.find(c => c.id.toString() === formData.courseId);
+
         const added = await createGradeAction({
           ...formData,
           studentId: parseInt(formData.studentId),
           courseId: parseInt(formData.courseId),
+          studentFirstName: student?.firstName || '',
+          studentLastName: student?.lastName || '',
+          courseCode: course?.code || '',
+          courseName: course?.name || '',
         });
 
         if (added) {
           form.reset();
         }
       } catch (error) {
-        console.error('');
         toast.error(
           "Une erreur s'est produite lors de la soumission du formulaire.",
         );
@@ -122,10 +128,6 @@ export const UpdateRate = ({
       </div>
     );
   }
-
-  console.log('students', students);
-    console.log('courses', courses);
-    console.log('grade', grade);
 
   return (
     <div>

@@ -17,23 +17,28 @@ FROM base as build
 
 WORKDIR /app
 
+# Copy only package.json and package-lock.json first
+COPY ./package.json ./
+
 # Install node modules
-COPY package*.json ./
+RUN npm install --include=dev
 
-RUN npm install
+# Ensure TypeScript is installed globally
+RUN npm install -g typescript
 
-# Copy application code
-COPY --link . .
-
-RUN npm run db:generate
+# Copy the rest of the application code
+COPY . .
 
 # Build application
 RUN npm run build
 
 FROM base
 
+WORKDIR /app
+
+# Copy build output and node_modules from build stage
 COPY --from=build /app /app
 
 EXPOSE 4000
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "npm", "run", "start" ]
