@@ -14,6 +14,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:unicorn/recommended',
     'plugin:node/recommended',
+    'prettier'
   ],
   rules: {
     'simple-import-sort/imports': 'error',
@@ -29,6 +30,7 @@ module.exports = {
     ],
     'node/no-unpublished-import': 'off',
     'no-process-exit': 'off',
+    'prettier/prettier': ['error', { 'endOfLine': 'auto' }]
   },
   overrides: [
     {
@@ -70,7 +72,6 @@ module.exports = {
     {
       files: ['tests/**'],
       plugins: ['vitest'],
-      extends: ['plugin:vitest/recommended'],
       rules: {
         '@typescript-eslint/unbound-method': 'off',
         'vitest/expect-expect': 'off',
