@@ -17,6 +17,7 @@ import {
 } from '@web/components/ui/form';
 import { toast } from 'sonner';
 import { createCourseAction } from '@web/actions/courses/courses.actions';
+import { DialogClose } from '../ui/dialog';
 
 const formSchema = z.object({
   code: z.string().min(1, 'Le code du cours est requis'),
@@ -59,10 +60,9 @@ export const AddCourse = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Ajouter un cours</h1>
+    <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           {/* Champ Code du Cours */}
           <FormField
             control={form.control}
@@ -130,12 +130,16 @@ export const AddCourse = () => {
 
           {/* Boutons */}
           <div className="flex justify-end gap-4">
-            <Button variant="outline" type="button">
-              Annuler
-            </Button>
-            <Button type="submit" className="bg-pink-600 hover:bg-pink-700">
-              Ajouter
-            </Button>
+            <DialogClose asChild>
+              <Button variant="outline" type="button">
+                Annuler
+              </Button>
+            </DialogClose>
+            <DialogClose asChild>
+              <Button type="submit" className="bg-pink-600 hover:bg-pink-700">
+                Ajouter
+              </Button>
+            </DialogClose>
           </div>
         </form>
       </Form>
