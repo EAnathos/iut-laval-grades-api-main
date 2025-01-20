@@ -25,27 +25,30 @@ interface SemesterSummary {
 
 export class PDFService {
   private static organizeBySemester(grades: StudentGrade[]): SemesterSummary[] {
-    const semesters = grades.reduce((acc, grade) => {
-      if (!acc[grade.semester]) {
-        acc[grade.semester] = [];
-      }
-      acc[grade.semester].push(grade);
-      return acc;
-    }, {} as Record<string, StudentGrade[]>);
+    const semesters = grades.reduce(
+      (acc, grade) => {
+        if (!acc[grade.semester]) {
+          acc[grade.semester] = [];
+        }
+        acc[grade.semester].push(grade);
+        return acc;
+      },
+      {} as Record<string, StudentGrade[]>,
+    );
 
     return Object.entries(semesters)
       .map(([semester, semesterGrades]) => {
         const totalCredits = semesterGrades.reduce(
           (sum, g) => sum + g.credits,
-          0
+          0,
         );
         const weightedSum = semesterGrades.reduce(
           (sum, g) => sum + g.grade * g.credits,
-          0
+          0,
         );
         const validatedCredits = semesterGrades.reduce(
           (sum, g) => sum + (g.grade >= 10 ? g.credits : 0),
-          0
+          0,
         );
 
         return {
@@ -61,7 +64,7 @@ export class PDFService {
 
   static async generateTranscript(
     studentInfo: StudentInfo,
-    grades: StudentGrade[]
+    grades: StudentGrade[],
   ): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       try {
@@ -94,7 +97,7 @@ export class PDFService {
         const colWidths = [80, 200, 70, 70];
         const startX = 50;
 
-        semesterSummaries.forEach((semester) => {
+        semesterSummaries.forEach(semester => {
           doc
             .fontSize(14)
             .text(`Semestre ${semester.semester}`, startX)
@@ -116,7 +119,7 @@ export class PDFService {
 
           // Contenu du tableau
           let y = tableTop + 20;
-          semester.grades.forEach((grade) => {
+          semester.grades.forEach(grade => {
             x = startX;
             doc
               .text(grade.courseCode, x, y)
@@ -132,11 +135,11 @@ export class PDFService {
             .moveDown(2)
             .text(
               `Moyenne du semestre: ${semester.average.toFixed(2)}/20`,
-              summaryX
+              summaryX,
             )
             .text(
               `Crédits validés: ${semester.validatedCredits}/${semester.totalCredits} ECTS`,
-              summaryX
+              summaryX,
             )
             .moveDown();
         });
@@ -146,7 +149,7 @@ export class PDFService {
           .moveDown(2)
           .text(
             `Fait à Laval, le ${new Date().toLocaleDateString('fr-FR')}`,
-            startX
+            startX,
           )
           .moveDown()
           .text('Le Directeur des Études', startX);

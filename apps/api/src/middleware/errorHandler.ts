@@ -8,7 +8,7 @@ export const errorHandler = (
   req: Request,
   res: Response<ErrorResponse>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   logger.error('Error:', {
     error: err.message,
@@ -32,7 +32,7 @@ export const errorHandler = (
     res.status(400).json({
       error: {
         message: 'Données invalides',
-        details: err.errors.map((e) => ({
+        details: err.errors.map(e => ({
           field: e.path.join('.'),
           message: e.message,
         })),
