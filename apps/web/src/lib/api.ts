@@ -96,7 +96,11 @@ const api = {
       }, user?.apiToken);
     },
     async releve(user: User, studentId: number) {
-      return fetchApi(`/grades/student/${studentId}/transcript`, {}, user?.apiToken);
+      const res = await fetch(`${apiBaseUrl}/grades/student/${studentId}/transcript?academicYear=2024-2025`, {
+        headers: { 'Authorization': `Bearer ${user?.apiToken}` },
+      });
+      
+      return res;
     }
   },
   stats: {
