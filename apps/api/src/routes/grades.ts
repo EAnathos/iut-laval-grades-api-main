@@ -201,13 +201,13 @@ router.get('/student/:studentId', gradeController.getByStudent);
 router.get(
   '/student/:studentId/transcript',
   validate(transcriptSchema),
-  gradeController.generateTranscript
+  gradeController.generateTranscript,
 );
 router.post('/', validate(createGradeSchema), gradeController.create);
 router.put(
   '/:id',
   validate(z.object({ grade: z.number().min(0).max(20) })),
-  gradeController.update
+  gradeController.update,
 );
 router.delete('/:id', gradeController.delete);
 

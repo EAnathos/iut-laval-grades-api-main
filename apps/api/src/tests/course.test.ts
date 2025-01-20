@@ -1,5 +1,9 @@
-import { authHeader, baseUrl, generateToken, requestWithSupertest } from './setup';
-
+import {
+  authHeader,
+  baseUrl,
+  generateToken,
+  requestWithSupertest,
+} from './setup';
 
 beforeAll(async () => await generateToken());
 

@@ -12,7 +12,7 @@ export const authController = {
     try {
       const result = await pool.query(
         'SELECT id, email, password_hash as "passwordHash", first_name as "firstName", last_name as "lastName", department FROM professors WHERE email = $1',
-        [email]
+        [email],
       );
 
       if (result.rows.length === 0) {
@@ -23,7 +23,7 @@ export const authController = {
       const professor = result.rows[0];
       const validPassword = await bcrypt.compare(
         password,
-        professor.passwordHash
+        professor.passwordHash,
       );
 
       if (!validPassword) {
@@ -38,7 +38,7 @@ export const authController = {
           role: 'professor',
         },
         process.env.JWT_SECRET!,
-        { expiresIn: process.env.JWT_EXPIRES_IN }
+        { expiresIn: process.env.JWT_EXPIRES_IN },
       );
 
       res.json({

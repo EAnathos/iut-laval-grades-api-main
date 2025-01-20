@@ -6,7 +6,7 @@ export const studentController = {
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const result = await pool.query(
-        'SELECT id, first_name as "firstName", last_name as "lastName", email, date_of_birth as "dateOfBirth", student_id as "studentId" FROM students'
+        'SELECT id, first_name as "firstName", last_name as "lastName", email, date_of_birth as "dateOfBirth", student_id as "studentId" FROM students',
       );
       res.json(result.rows);
     } catch (error) {
@@ -21,7 +21,7 @@ export const studentController = {
     try {
       const result = await pool.query(
         'SELECT id, first_name as "firstName", last_name as "lastName", email, date_of_birth as "dateOfBirth", student_id as "studentId" FROM students WHERE id = $1',
-        [id]
+        [id],
       );
       if (result.rows.length === 0) {
         res.status(404).json({ error: 'Étudiant non trouvé' });
@@ -56,7 +56,7 @@ export const studentController = {
           date_of_birth as "dateOfBirth",
           student_id as "studentId"
       `,
-        [firstName, lastName, email, dateOfBirth, studentId]
+        [firstName, lastName, email, dateOfBirth, studentId],
       );
 
       res.status(201).json(result.rows[0]);

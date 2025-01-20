@@ -160,17 +160,17 @@ const academicYearSchema = z.object({
 router.get(
   '/global',
   validate(academicYearSchema),
-  statsController.getGlobalStats
+  statsController.getGlobalStats,
 );
 router.get(
   '/course/:courseId',
   validate(academicYearSchema),
-  statsController.getCourseStats
+  statsController.getCourseStats,
 );
 router.get(
   '/student/:studentId',
   validate(academicYearSchema),
-  statsController.getStudentSemesterStats
+  statsController.getStudentSemesterStats,
 );
 
 export const statsRoutes = router;
