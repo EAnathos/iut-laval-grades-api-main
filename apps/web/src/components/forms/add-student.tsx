@@ -23,6 +23,7 @@ import {
   Label
 } from 'react-aria-components';
 import { toast } from 'sonner';
+import { DialogClose } from '../ui/dialog';
 
 const formSchema = z.object({
   firstName: z.string({
@@ -173,7 +174,9 @@ export const AddStudent = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">Ajouter</Button>
+          <DialogClose asChild>
+            <Button type="submit" className="w-full">Ajouter</Button>
+          </DialogClose>
         </form>
       </Form>
     </div>

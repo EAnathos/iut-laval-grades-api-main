@@ -64,7 +64,7 @@ type AddRateProps = {
   idStudent?: Student['id'];
   idCourse?: Course['id'];
   students?: Student[] | null;
-  courses: Course[] | null;
+  courses?: Course[] | null;
 };
 
 export const AddRate = ({
