@@ -3,6 +3,7 @@ import { User } from 'next-auth';
 import React from 'react'
 import { Box } from './box';
 import SelectSearchStudent from './select-search-students';
+import { Skeleton } from '../ui/skeleton';
 
 type StudentsStatsProps = {
   user: User;
@@ -17,7 +18,7 @@ export const StudentsStats = async ({ user, academicYear, studentId }: StudentsS
 
   const students = await api.students.getAll(user);
   if (!students) return <div>Erreur lors du chargement des cours</div>;
-  
+
   const nCourses = studentStats?.reduce((acc, stat) => acc + Number(stat.coursesCount), 0) || 0;
   const nCredits = studentStats?.reduce((acc, stat) => acc + Number(stat.validatedCredits), 0) || 0;
 
@@ -68,6 +69,36 @@ export const StudentsStats = async ({ user, academicYear, studentId }: StudentsS
                 }
               />
             ))}
+          </div>
+        </>
+      ) : null}
+    </div>
+  )
+}
+
+export const StudentsStatsSkeleton = ({ studentId }: { studentId?: string }) => {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        Statistiques par Étudiants
+      </h2>
+      <SelectSearchStudent students={[]} />
+      {studentId ? (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
+            <Skeleton className='w-full h-[124px]' />
+            <Skeleton className='w-full h-[124px]' />
+          </div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4 mt-6">
+            Moyennes par Semestres
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+            <Skeleton className='w-full h-[124px]' />
+            <Skeleton className='w-full h-[124px]' />
+            <Skeleton className='w-full h-[124px]' />
+            <Skeleton className='w-full h-[124px]' />
+            <Skeleton className='w-full h-[124px]' />
+            <Skeleton className='w-full h-[124px]' />
           </div>
         </>
       ) : null}

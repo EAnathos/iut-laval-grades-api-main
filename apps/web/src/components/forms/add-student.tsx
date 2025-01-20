@@ -1,69 +1,69 @@
 'use client';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Button } from '@web/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@web/components/ui/form';
 import { Input } from '@web/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import * as React from 'react';
 
-import { cn } from '@web/lib/utils';
-import { getLocalTimeZone, today } from '@internationalized/date';
-import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { createStudentAction } from '@web/actions/students/students.actions';
 import {
-  Calendar,
-  CalendarCell,
-  CalendarGrid,
-  CalendarGridBody,
-  CalendarGridHeader,
-  CalendarHeaderCell,
   DateInput,
   DatePicker,
   DateSegment,
-  Dialog,
   Group,
-  Heading,
-  Label,
-  Popover,
+  Label
 } from 'react-aria-components';
-import api from '@web/lib/api';
-import { getUser } from '@web/lib/auth';
 import { toast } from 'sonner';
-import { createStudentAction } from '@web/actions/students/students.actions';
+import { DialogClose } from '../ui/dialog';
 
 const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string().email(),
-  dateOfBirth: z.date(),
-  studentId: z.string(),
+  firstName: z.string({
+    message: 'Veuillez saisir un prénom.',
+    required_error: 'Veuillez saisir un prénom.',
+  }),
+  lastName: z.string({
+    message: 'Veuillez saisir un nom.',
+    required_error: 'Veuillez saisir un nom.',
+  }),
+  email: z.string({
+    message: 'Veuillez saisir une adresse e-mail.',
+    required_error: 'Veuillez saisir une adresse e-mail.',
+  }).email({
+    message: 'Veuillez saisir une adresse e-mail valide.',
+  }),
+  dateOfBirth: z.date({
+    message: 'Veuillez saisir une date de naissance valide.',
+    required_error: 'Veuillez saisir une date de naissance.',
+  }),
+  studentId: z.string({
+    message: 'Veuillez saisir un numéro étudiant.',
+    required_error: 'Veuillez saisir un numéro étudiant.',
+  }),
 });
 
 export const AddStudent = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      dateOfBirth: new Date(),
-      studentId: '',
+      firstName: undefined,
+      lastName: undefined,
+      email: undefined,
+      dateOfBirth: undefined,
+      studentId: undefined,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('values', values);
     try {
-
       const formData = formSchema.parse(values);
       const ajout = await createStudentAction(formData);
 
@@ -73,9 +73,7 @@ export const AddStudent = () => {
         form.reset();
         toast.success('Étudiant créé avec succès.');
       }
-
     } catch (error) {
-
       console.error('Error creating student', error);
       toast.error(
         "Une erreur s'est produite lors de la soumission du formulaire.",
@@ -87,7 +85,7 @@ export const AddStudent = () => {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="firstName"
@@ -176,7 +174,9 @@ export const AddStudent = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">Ajouter</Button>
+          <DialogClose asChild>
+            <Button type="submit" className="w-full">Ajouter</Button>
+          </DialogClose>
         </form>
       </Form>
     </div>

@@ -53,6 +53,9 @@
     "e2e:test": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "lint": {
+      "cache": false
     }
   }
 }

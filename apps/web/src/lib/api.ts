@@ -8,7 +8,7 @@ const fetchApi = async <T>(
   url: string,
   options: RequestInit = {},
   accessToken?: string
-): Promise<T | null> => {  
+): Promise<T | null> => {
   const res = await fetch(`${apiBaseUrl}${url}`, {
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
     ...options,
@@ -65,7 +65,7 @@ const api = {
         body: JSON.stringify(course),
       }, user?.apiToken);
     },
-    async delete(user: User, courseId: string) {
+    async delete(user: User, courseId: number) {
       return fetchApi(`/courses/${courseId}`, {
         method: 'DELETE',
       }, user?.apiToken);

@@ -2,6 +2,7 @@ import api from '@web/lib/api';
 import { User } from 'next-auth';
 import { Box } from './box';
 import SelectSearchCourses from './select-search-courses';
+import { Skeleton } from '../ui/skeleton';
 
 type CoursesStatsProps = {
   user: User;
@@ -57,6 +58,25 @@ export const CoursesStats = async ({ user, academicYear, courseId }: CoursesStat
             }
             subtitle="Pourcentage de réussite"
           />
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+export const CoursesStatsSkeleton = ({ courseId }: { courseId?: string }) => {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        Statistiques par Cours
+      </h2>
+      <SelectSearchCourses courses={[]} />
+      {courseId ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Skeleton className='w-full h-[124px]' />
+          <Skeleton className='w-full h-[124px]' />
+          <Skeleton className='w-full h-[124px]' />
+          <Skeleton className='w-full h-[124px]' />
         </div>
       ) : null}
     </div>
