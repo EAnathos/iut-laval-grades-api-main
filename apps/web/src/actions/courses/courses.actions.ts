@@ -11,7 +11,6 @@ export const createCourseAction = async (form: Omit<Course, 'id'>) => {
 
   try {
     const courses = await api.courses.getAll(user);
-    console.log(courses);
 
     if (!courses) {
       throw new Error('Failed to retrieve courses');
