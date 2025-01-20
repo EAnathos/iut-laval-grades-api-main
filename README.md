@@ -35,7 +35,7 @@ npm run build && npm run start
 Dans un autre terminal :
 
 ```bash
-npm run dev:test
+npm run test
 ```
 
 ### Tests end-to-end
@@ -43,6 +43,7 @@ npm run dev:test
 Dans un autre terminal :
 
 ```bash
+npx playwright install
 npm run e2e:test
 ```
 
