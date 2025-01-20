@@ -17,10 +17,7 @@ interface CoursesTableProps {
 export async function CourseTable({ courses }: CoursesTableProps) {
 
   return (
-    <div className="round-lg border bg-white">
-      <div className="flex justify-between items-center p-4 border-b mb-4">
-        <h2 className="text-lg font-semibold">Cours</h2>
-      </div>
+    <div className="rounded-lg border bg-white">
       <Table>
         <TableHeader>
           <TableRow>
