@@ -14,7 +14,7 @@ interface CoursesTableProps {
   courses: Course[];
 }
 
-export async function CourseTable({ courses }: CoursesTableProps) {
+export function CourseTable({ courses }: CoursesTableProps) {
 
   return (
     <div className="rounded-lg border bg-white">
