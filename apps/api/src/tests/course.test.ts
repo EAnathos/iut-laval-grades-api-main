@@ -1,6 +1,5 @@
 import { authHeader, baseUrl, generateToken, requestWithSupertest } from './setup';
 
-
 beforeAll(async () => await generateToken());
 
 describe('GET api/courses', () => {
