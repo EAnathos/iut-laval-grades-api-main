@@ -137,7 +137,7 @@ export function LoginForm({
         </form>
       </Form>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
-        Mot de passe oublié ? <a href="https://antoinejosset.fr" target="_blank" rel="noopener noreferrer">ici</a>
+        Mot de passe oublié ? <a href="https://onlyfans.wtf/iut" target="_blank" rel="noopener noreferrer">ici</a>
       </div>
     </div>
   )
