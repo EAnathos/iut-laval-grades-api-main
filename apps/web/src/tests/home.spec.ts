@@ -22,5 +22,5 @@ test('login with valid credentials', async ({ page, baseURL }) => {
   await page.click('button[type="submit"]');
   await page.waitForSelector('text="Déconnexion"');
 
-  expect(page.url()).toBe(baseURL + '/app');
+  expect(page.url()).toBe(baseURL + '/students');
 });
