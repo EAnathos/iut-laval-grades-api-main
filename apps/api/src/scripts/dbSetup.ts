@@ -29,11 +29,11 @@ async function setupDatabase() {
     // Lire et exécuter les scripts SQL
     const initSQL = fs.readFileSync(
       path.join(__dirname, '../../db/init.sql'),
-      'utf8'
+      'utf8',
     );
     const seedSQL = fs.readFileSync(
       path.join(__dirname, '../../db/seed.sql'),
-      'utf8'
+      'utf8',
     );
 
     await pool.query(initSQL);

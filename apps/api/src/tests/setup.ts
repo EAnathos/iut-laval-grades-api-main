@@ -12,10 +12,10 @@ const generateToken = async () => {
       email: 'prof@example.com',
       password: 'password123',
     });
-  token = response.body.token
-}
+  token = response.body.token;
+};
 
-const authHeader = async  () => ({
+const authHeader = async () => ({
   Authorization: `Bearer ${token}`,
 });
 

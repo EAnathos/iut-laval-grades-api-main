@@ -5,7 +5,6 @@ import { logger } from '../services/loggerService';
 export const validate =
   (schema: AnyZodObject) =>
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
     try {
       const toValidate = req.method === 'GET' ? req.query : req.body;
       await schema.parseAsync(toValidate);
@@ -21,7 +20,7 @@ export const validate =
         });
         res.status(400).json({
           error: 'Données invalides',
-          details: error.errors.map((e) => ({
+          details: error.errors.map(e => ({
             field: e.path.join('.'),
             message: e.message,
           })),
