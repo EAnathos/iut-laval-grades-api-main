@@ -1,5 +1,7 @@
 # IUT Laval Grades
 
+Url public: [https://web-production-3b8b.up.railway.app/](https://web-production-3b8b.up.railway.app/)
+
 App de gestion des notes pour l'IUT de Laval. Cette API permet aux professeurs de gérer les notes des étudiants et de générer des relevés de notes.
 
 ## Fonctionnalités
