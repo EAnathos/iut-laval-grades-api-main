@@ -3,6 +3,7 @@
 const apiBaseUrl = process.env.API_URL;
 import { Course, CourseStats, GlobalStats, Grade, LoginCredentials, Professor, Student, StudentSemesterStats } from '@web/types';
 import { User } from 'next-auth';
+// import nodeFetch from 'node-fetch';
 
 const fetchApi = async <T>(
   url: string,
@@ -96,7 +97,11 @@ const api = {
       }, user?.apiToken);
     },
     async releve(user: User, studentId: number) {
-      return fetchApi(`/grades/student/${studentId}/transcript`, {}, user?.apiToken);
+      const res = await fetch(`${apiBaseUrl}/grades/student/${studentId}/transcript?academicYear=2024-2025`, {
+        headers: { 'Authorization': `Bearer ${user?.apiToken}` },
+      });
+      
+      return res;
     }
   },
   stats: {

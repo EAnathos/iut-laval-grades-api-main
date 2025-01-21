@@ -1,15 +1,15 @@
-import { ArrowLeft, Download } from 'lucide-react'
-import { Button } from "@web/components/ui/button"
-import Link from "next/link"
-import { Student } from '@web/types'
-
-
+'use client';
+import { Button } from '@web/components/ui/button';
+import { Student } from '@web/types';
+import { ArrowLeft, Download } from 'lucide-react';
+import Link from 'next/link';
 
 interface StudentDetailsProps {
   student: Student;
 }
 
 export function StudentDetails({ student }: StudentDetailsProps) {
+
   return (
     <div className="space-y-8 mb-4">
       <div className="flex items-center gap-2 text-gray-600">
@@ -22,12 +22,18 @@ export function StudentDetails({ student }: StudentDetailsProps) {
       <div className="rounded-lg border bg-white p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{student.firstName} {student.lastName}</h1>
-            <p className="text-sm text-gray-600">Numéro étudiant: {student.studentId}</p>
+            <h1 className="text-2xl font-bold">
+              {student.firstName} {student.lastName}
+            </h1>
+            <p className="text-sm text-gray-600">
+              Numéro étudiant: {student.studentId}
+            </p>
           </div>
-          <Button>
-            <Download className="mr-2 h-4 w-4" />
-            Relevé de notes
+          <Button asChild>
+            <Link href={`/api/releve-notes?id=${student.id}`}>
+              <Download className="mr-2 h-4 w-4" />
+              Relevé de notes
+            </Link>
           </Button>
         </div>
 
@@ -40,11 +46,12 @@ export function StudentDetails({ student }: StudentDetailsProps) {
             <label className="text-sm font-medium text-gray-600">
               Date de naissance
             </label>
-            <p className="mt-1">{new Date(student.dateOfBirth).toLocaleDateString('fr-FR')}</p>
+            <p className="mt-1">
+              {new Date(student.dateOfBirth).toLocaleDateString('fr-FR')}
+            </p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
