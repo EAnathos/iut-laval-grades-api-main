@@ -17,6 +17,7 @@ export const courseController = {
       `);
       res.json(result.rows);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la récupération des cours' });
       throw new AppError(
         500,
         'Erreur lors de la récupération des cours',
@@ -48,6 +49,7 @@ export const courseController = {
 
       res.json(result.rows[0]);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la récupération du cours' });
       if (error instanceof AppError) throw error;
       throw new AppError(
         500,
@@ -76,6 +78,7 @@ export const courseController = {
 
       res.status(201).json(result.rows[0]);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la création du cours' });
       if (error instanceof Error && 'code' in error && error.code === '23505') {
         throw new AppError(
           409,
@@ -116,6 +119,7 @@ export const courseController = {
 
       res.json(result.rows[0]);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la mise à jour du cours' });
       if (error instanceof AppError) throw error;
       throw new AppError(
         500,
@@ -139,6 +143,7 @@ export const courseController = {
 
       res.status(204).send();
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la suppression du cours' });
       if (error instanceof AppError) throw error;
       throw new AppError(
         500,
