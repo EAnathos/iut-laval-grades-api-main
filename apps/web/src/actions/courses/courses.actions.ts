@@ -11,7 +11,6 @@ export const createCourseAction = async (form: Omit<Course, 'id'>) => {
 
   try {
     const courses = await api.courses.getAll(user);
-    console.log(courses);
 
     if (!courses) {
       throw new Error('Failed to retrieve courses');
@@ -48,21 +47,20 @@ export const updateCourseAction = async (form: Course) => {
 
   try {
     const courses = await api.courses.getAll(user);
-    console.log(courses);
 
     if (!courses) {
       throw new Error('Failed to retrieve courses');
     }
 
-    // Vérification si le code du cours existe déjà
-    const courseCodeExists = courses.some(course => course.code === form.code);
-    if (courseCodeExists) {
+    // Vérification si le code du cours est déjà utilisé par un autre cours
+    const codeConflict = courses.some(course => course.code === form.code && course.id !== form.id);
+    if (codeConflict) {
       return { status: 500, message: 'Le code du cours est déjà utilisé' };
     }
 
-    // Vérification si le nom du cours existe déjà
-    const courseNameExists = courses.some(course => course.name === form.name);
-    if (courseNameExists) {
+    // Vérification si le nom du cours est déjà utilisé par un autre cours
+    const nameConflict = courses.some(course => course.name === form.name && course.id !== form.id);
+    if (nameConflict) {
       return { status: 500, message: 'Le nom du cours est déjà utilisé' };
     }
 
@@ -77,7 +75,7 @@ export const updateCourseAction = async (form: Course) => {
     console.error('Error updating course', error);
     return null;
   }
-}
+};
 
 export const deleteCourseAction = async (id: number) => {
   const user = await getUser();

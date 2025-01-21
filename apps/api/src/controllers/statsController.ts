@@ -23,7 +23,7 @@ export const statsController = {
         WHERE c.code = $1
         GROUP BY c.id, c.code, c.name
       `,
-        [courseId, academicYear]
+        [courseId, academicYear],
       );
 
       res.json(result.rows[0]);
@@ -31,7 +31,7 @@ export const statsController = {
       throw new AppError(
         500,
         'Erreur lors de la récupération des statistiques du cours',
-        'STATS_ERROR'
+        'STATS_ERROR',
       );
     }
   },
@@ -55,7 +55,7 @@ export const statsController = {
         GROUP BY g.semester
         ORDER BY g.semester
       `,
-        [studentId, academicYear]
+        [studentId, academicYear],
       );
 
       res.json(result.rows);
@@ -63,7 +63,7 @@ export const statsController = {
       throw new AppError(
         500,
         "Erreur lors de la récupération des statistiques de l'étudiant",
-        'STATS_ERROR'
+        'STATS_ERROR',
       );
     }
   },
@@ -92,7 +92,7 @@ export const statsController = {
           AVG(success_rate) as "averageSuccessRate"
         FROM course_stats
       `,
-        [academicYear]
+        [academicYear],
       );
 
       res.json(result.rows[0]);
@@ -100,7 +100,7 @@ export const statsController = {
       throw new AppError(
         500,
         'Erreur lors de la récupération des statistiques globales',
-        'STATS_ERROR'
+        'STATS_ERROR',
       );
     }
   },
