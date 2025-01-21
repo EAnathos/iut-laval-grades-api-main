@@ -20,7 +20,7 @@ export const validate =
         });
         res.status(400).json({
           error: 'Données invalides',
-          details: error.errors.map((e) => ({
+          details: error.errors.map(e => ({
             field: e.path.join('.'),
             message: e.message,
           })),

@@ -7,7 +7,7 @@ export const courseController = {
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const result = await pool.query(`
-        SELECT 
+        SELECT
           id,
           code,
           name,
@@ -17,10 +17,11 @@ export const courseController = {
       `);
       res.json(result.rows);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la récupération des cours' });
       throw new AppError(
         500,
         'Erreur lors de la récupération des cours',
-        'COURSES_FETCH_ERROR'
+        'COURSES_FETCH_ERROR',
       );
     }
   },
@@ -30,16 +31,16 @@ export const courseController = {
     try {
       const result = await pool.query(
         `
-        SELECT 
+        SELECT
           id,
           code,
           name,
           credits,
           description
-        FROM courses 
+        FROM courses
         WHERE id = $1
       `,
-        [id]
+        [id],
       );
 
       if (result.rows.length === 0) {
@@ -48,11 +49,12 @@ export const courseController = {
 
       res.json(result.rows[0]);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la récupération du cours' });
       if (error instanceof AppError) throw error;
       throw new AppError(
         500,
         'Erreur lors de la récupération du cours',
-        'COURSE_FETCH_ERROR'
+        'COURSE_FETCH_ERROR',
       );
     }
   },
@@ -64,29 +66,30 @@ export const courseController = {
         `
         INSERT INTO courses (code, name, credits, description)
         VALUES ($1, $2, $3, $4)
-        RETURNING 
+        RETURNING
           id,
           code,
           name,
           credits,
           description
       `,
-        [code, name, credits, description]
+        [code, name, credits, description],
       );
 
       res.status(201).json(result.rows[0]);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la création du cours' });
       if (error instanceof Error && 'code' in error && error.code === '23505') {
         throw new AppError(
           409,
           'Un cours avec ce code existe déjà',
-          'COURSE_ALREADY_EXISTS'
+          'COURSE_ALREADY_EXISTS',
         );
       }
       throw new AppError(
         500,
         'Erreur lors de la création du cours',
-        'COURSE_CREATE_ERROR'
+        'COURSE_CREATE_ERROR',
       );
     }
   },
@@ -97,17 +100,17 @@ export const courseController = {
     try {
       const result = await pool.query(
         `
-        UPDATE courses 
+        UPDATE courses
         SET code = $1, name = $2, credits = $3, description = $4
         WHERE id = $5
-        RETURNING 
+        RETURNING
           id,
           code,
           name,
           credits,
           description
       `,
-        [code, name, credits, description, id]
+        [code, name, credits, description, id],
       );
 
       if (result.rows.length === 0) {
@@ -116,11 +119,12 @@ export const courseController = {
 
       res.json(result.rows[0]);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la mise à jour du cours' });
       if (error instanceof AppError) throw error;
       throw new AppError(
         500,
         'Erreur lors de la mise à jour du cours',
-        'COURSE_UPDATE_ERROR'
+        'COURSE_UPDATE_ERROR',
       );
     }
   },
@@ -130,7 +134,7 @@ export const courseController = {
     try {
       const result = await pool.query(
         'DELETE FROM courses WHERE id = $1 RETURNING id',
-        [id]
+        [id],
       );
 
       if (result.rows.length === 0) {
@@ -139,11 +143,12 @@ export const courseController = {
 
       res.status(204).send();
     } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la suppression du cours' });
       if (error instanceof AppError) throw error;
       throw new AppError(
         500,
         'Erreur lors de la suppression du cours',
-        'COURSE_DELETE_ERROR'
+        'COURSE_DELETE_ERROR',
       );
     }
   },

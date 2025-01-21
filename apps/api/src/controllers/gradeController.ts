@@ -21,7 +21,7 @@ export const gradeController = {
       throw new AppError(
         500,
         'Erreur lors de la récupération des notes',
-        'GRADES_FETCH_ERROR'
+        'GRADES_FETCH_ERROR',
       );
     }
   },
@@ -38,14 +38,14 @@ export const gradeController = {
         WHERE g.student_id = $1
         ORDER BY g.academic_year DESC, g.semester DESC
       `,
-        [studentId]
+        [studentId],
       );
       res.json(result.rows);
     } catch (error) {
       throw new AppError(
         500,
         "Erreur lors de la récupération des notes de l'étudiant",
-        'GRADES_FETCH_ERROR'
+        'GRADES_FETCH_ERROR',
       );
     }
   },
@@ -58,14 +58,15 @@ export const gradeController = {
       semester,
       academicYear,
     }: CreateGradeInput = req.body;
+
     try {
       const studentExists = await pool.query(
         'SELECT id FROM students WHERE id = $1',
-        [studentId]
+        [studentId],
       );
       const courseExists = await pool.query(
         'SELECT id FROM courses WHERE id = $1',
-        [courseId]
+        [courseId],
       );
 
       if (studentExists.rows.length === 0) {
@@ -81,7 +82,7 @@ export const gradeController = {
         VALUES ($1, $2, $3, $4, $5)
         RETURNING id, grade, semester, academic_year as "academicYear"
       `,
-        [studentId, courseId, grade, semester, academicYear]
+        [studentId, courseId, grade, semester, academicYear],
       );
 
       res.status(201).json(result.rows[0]);
@@ -90,7 +91,7 @@ export const gradeController = {
       throw new AppError(
         500,
         'Erreur lors de la création de la note',
-        'GRADE_CREATE_ERROR'
+        'GRADE_CREATE_ERROR',
       );
     }
   },
@@ -106,7 +107,7 @@ export const gradeController = {
         WHERE id = $2
         RETURNING id, grade, semester, academic_year as "academicYear"
       `,
-        [grade, id]
+        [grade, id],
       );
 
       if (result.rows.length === 0) {
@@ -119,7 +120,7 @@ export const gradeController = {
       throw new AppError(
         500,
         'Erreur lors de la mise à jour de la note',
-        'GRADE_UPDATE_ERROR'
+        'GRADE_UPDATE_ERROR',
       );
     }
   },
@@ -129,7 +130,7 @@ export const gradeController = {
     try {
       const result = await pool.query(
         'DELETE FROM grades WHERE id = $1 RETURNING *',
-        [id]
+        [id],
       );
 
       if (result.rows.length === 0) {
@@ -142,7 +143,7 @@ export const gradeController = {
       throw new AppError(
         500,
         'Erreur lors de la suppression de la note',
-        'GRADE_DELETE_ERROR'
+        'GRADE_DELETE_ERROR',
       );
     }
   },
@@ -154,7 +155,7 @@ export const gradeController = {
     try {
       const studentResult = await pool.query(
         'SELECT first_name as "firstName", last_name as "lastName", student_id as "studentId" FROM students WHERE id = $1',
-        [studentId]
+        [studentId],
       );
 
       if (studentResult.rows.length === 0) {
@@ -174,14 +175,14 @@ export const gradeController = {
         WHERE g.student_id = $1 AND g.academic_year = $2
         ORDER BY g.semester, c.code
       `,
-        [studentId, academicYear]
+        [studentId, academicYear],
       );
 
       if (gradesResult.rows.length === 0) {
         throw new AppError(
           404,
           'Aucune note trouvée pour cet étudiant',
-          'NO_GRADES_FOUND'
+          'NO_GRADES_FOUND',
         );
       }
 
@@ -190,17 +191,17 @@ export const gradeController = {
           ...studentResult.rows[0],
           academicYear,
         },
-        gradesResult.rows
+        gradesResult.rows,
       );
 
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader(
         'Content-Disposition',
-        `attachment; filename=releve_notes_${studentResult.rows[0].studentId}_${academicYear}.pdf`
+        `attachment; filename=releve_notes_${studentResult.rows[0].studentId}_${academicYear}.pdf`,
       );
 
       await new Promise<void>((resolve, reject) => {
-        res.write(pdfBuffer, (err) => {
+        res.write(pdfBuffer, err => {
           if (err) reject(err);
           res.end(() => resolve());
         });
@@ -210,7 +211,7 @@ export const gradeController = {
       throw new AppError(
         500,
         'Erreur lors de la génération du relevé',
-        'PDF_GENERATION_ERROR'
+        'PDF_GENERATION_ERROR',
       );
     }
   },

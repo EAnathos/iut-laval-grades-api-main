@@ -9,7 +9,7 @@ export interface RequestWithUser extends Request {
 export const authMiddleware = (
   req: RequestWithUser,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
