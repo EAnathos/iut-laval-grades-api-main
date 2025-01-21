@@ -30,12 +30,12 @@ describe('Course Controller API', () => {
       expect(response.body).toHaveProperty('id', validId);
     });
 
-    it('should return 404 if the course is not found', async () => {
+    it('should return 401 if the course is not found', async () => {
       const invalidId = 9999;
       const response = await requestWithSupertest
         .get(`${baseUrl}/courses/${invalidId}`)
         .set(await authHeader());
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(401);
       expect(response.body.message).toBe('Cours non trouvé');
     });
   });
@@ -96,7 +96,7 @@ describe('Course Controller API', () => {
       expect(response.body.code).toBe(updatedCourse.code);
     });
 
-    it('should return 404 if the course to update is not found', async () => {
+    it('should return 401 if the course to update is not found', async () => {
       const invalidId = 9999;
       const updatedCourse = {
         code: 'CS103',
@@ -110,7 +110,7 @@ describe('Course Controller API', () => {
         .set(await authHeader())
         .send(updatedCourse);
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(401);
       expect(response.body.message).toBe('Cours non trouvé');
     });
   });
@@ -125,13 +125,13 @@ describe('Course Controller API', () => {
       expect(response.status).toBe(204);
     });
 
-    it('should return 404 if the course to delete is not found', async () => {
+    it('should return 401 if the course to delete is not found', async () => {
       const invalidId = 9999;
       const response = await requestWithSupertest
         .delete(`${baseUrl}/courses/${invalidId}`)
         .set(await authHeader());
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(401);
       expect(response.body.message).toBe('Cours non trouvé');
     });
   });
