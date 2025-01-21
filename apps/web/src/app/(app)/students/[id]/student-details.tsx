@@ -1,10 +1,8 @@
 'use client';
-import { ArrowLeft, Download } from 'lucide-react';
 import { Button } from '@web/components/ui/button';
-import Link from 'next/link';
 import { Student } from '@web/types';
-import { releverNotesAction } from '@web/actions/grades/grades.actions';
-import api from '@web/lib/api';
+import { ArrowLeft, Download } from 'lucide-react';
+import Link from 'next/link';
 
 interface StudentDetailsProps {
   student: Student;
@@ -31,8 +29,8 @@ export function StudentDetails({ student }: StudentDetailsProps) {
               Numéro étudiant: {student.studentId}
             </p>
           </div>
-          <Button >
-            <Link href={`/students/${student.id}/releve-notes`}>
+          <Button asChild>
+            <Link href={`/api/releve-notes?id=${student.id}`}>
               <Download className="mr-2 h-4 w-4" />
               Relevé de notes
             </Link>

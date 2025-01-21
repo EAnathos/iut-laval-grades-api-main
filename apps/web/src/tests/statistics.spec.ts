@@ -10,6 +10,7 @@ test.beforeEach(async ({ page, baseURL }) => {
   await page.waitForSelector('text="Déconnexion"');
 
   await page.goto('/statistics');
+  await page.waitForTimeout(500);
 });
 
 test('should display the global statistics', async ({ page }) => {

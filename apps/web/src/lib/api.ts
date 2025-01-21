@@ -3,6 +3,7 @@
 const apiBaseUrl = process.env.API_URL;
 import { Course, CourseStats, GlobalStats, Grade, LoginCredentials, Professor, Student, StudentSemesterStats } from '@web/types';
 import { User } from 'next-auth';
+// import nodeFetch from 'node-fetch';
 
 const fetchApi = async <T>(
   url: string,
